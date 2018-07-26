@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "todo-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "racy dev",
+    "build": "racy build",
+    "serve": "racy serve",
+    "start": "NODE_ENV=production npm run build && npm run serve"
+  },
+  "dependencies": {
+    "racy": "^1.7.3",
+    "react": "^16.5.2"
+  }
+}

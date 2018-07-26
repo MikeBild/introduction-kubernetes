@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: todo-app-ui
+  labels:
+    app: todo
+    tier: frontend
+spec:
+  template:
+    metadata:
+      labels:
+        app: todo
+        tier: frontend
+        channel: stable
+    spec:
+      containers:
+        - image: gcr.io/workshops-mikebild/todo-app-ui:v1.0.0
+          name: todo-app-ui
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'
+            - name: GRAPHQLURL
+              value: 'http://todo-app-graphql.workshops.mikebild.com/graphql'

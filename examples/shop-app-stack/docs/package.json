@@ -1,0 +1,23 @@
+{
+  "name": "doc-app",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development reunify --port 7020 --basename docs --open src/pages",
+    "start": "NODE_ENV=production reunify --port 7020 --host 0.0.0.0 --basename docs src/pages",
+    "export": "NODE_ENV=production reunify export --basename docs --static --out-dir ./docs src/pages",
+    "serve": "npm run export && NODE_ENV=production static-server --port 7020 --open --not-found ./docs/404.html ./"
+  },
+  "reunify": {
+    "title": "Docs App"
+  },
+  "devDependencies": {
+    "components-library": "file:../components-library",
+    "node-fetch": "2.1.2",
+    "react-markdown": "3.3.4",
+    "reunify": "6.1.1",
+    "static-server": "2.2.1",
+    "url-loader": "1.0.1"
+  }
+}

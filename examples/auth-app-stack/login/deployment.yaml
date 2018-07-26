@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: auth-login
+  labels:
+    app: auth
+    tier: frontend
+spec:
+  template:
+    metadata:
+      labels:
+        app: auth
+        tier: frontend
+        channel: stable
+    spec:
+      containers:
+        - image: gcr.io/workshops-mikebild/auth-login:v1.0.0
+          name: auth-login
+          ports:
+            - containerPort: 8080

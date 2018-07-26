@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: todo-app-graphql
+  labels:
+    app: todo
+    tier: backend
+spec:
+  template:
+    metadata:
+      labels:
+        app: todo
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/workshops-mikebild/todo-app-graphql:v1.0.0
+          name: todo-app-graphql
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'
+            - name: DATABASEURL
+              value: 'http://todo-app-couchdb:5984/todos'

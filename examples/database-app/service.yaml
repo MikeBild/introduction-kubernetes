@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb-app
+  labels:
+    app: couchdb
+    tier: database
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: couchdb-app.workshops.mikebild.com.
+spec:
+  selector:
+    app: couchdb
+    tier: database
+  type: LoadBalancer
+  ports:
+    - port: 5984
+      targetPort: 5984

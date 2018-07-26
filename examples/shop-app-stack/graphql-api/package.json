@@ -1,0 +1,23 @@
+{
+  "name": "graphql-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "jest --watch"
+  },
+  "dependencies": {
+    "apollo-server": "2.0.0-rc.5",
+    "dataloader": "1.4.0",
+    "dotenv": "6.0.0",
+    "graphql": "0.13.2",
+    "node-fetch": "2.1.2"
+  },
+  "devDependencies": {
+    "graphql-tools": "3.0.4",
+    "jest-cli": "23.2.0",
+    "mocha": "5.2.0",
+    "nodemon": "1.17.5"
+  }
+}

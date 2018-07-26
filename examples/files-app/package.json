@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "files-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "racy dev",
+    "build": "racy build",
+    "serve": "racy serve",
+    "start": "NODE_ENV=production npm run build && npm run serve"
+  },
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express-fileupload": "^1.0.0-alpha.1",
+    "racy": "^1.7.3"
+  }
+}

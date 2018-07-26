@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "auth-login-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "racy dev"
+  },
+  "dependencies": {
+    "racy": "^1.7.3",
+    "react": "^16.5.2"
+  }
+}

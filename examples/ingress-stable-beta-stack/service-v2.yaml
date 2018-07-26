@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-app-v2
+  labels:
+    app: ingress-app-v2
+spec:
+  selector:
+    app: ingress-app-v2
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: v2-http
+  sessionAffinity: ClientIP

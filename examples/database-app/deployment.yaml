@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: couchdb-app
+  labels:
+    app: couchdb
+    tier: database
+spec:
+  template:
+    metadata:
+      labels:
+        app: couchdb
+        tier: database
+    spec:
+      containers:
+        - image: gcr.io/workshops-mikebild/couchdb-app:v1.0.0
+          name: couchdb
+          ports:
+            - containerPort: 5984
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: username
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: password
+          volumeMounts:
+            - name: couchdb-persistent-storage
+              mountPath: /opt/couchdb/data
+      volumes:
+        - name: couchdb-persistent-storage
+          persistentVolumeClaim:
+            claimName: couchdb-persistent-volume-claim

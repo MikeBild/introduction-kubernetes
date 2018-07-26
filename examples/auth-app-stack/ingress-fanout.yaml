@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fanout-ingress
+  labels:
+    app: auth
+    tier: frontend
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: auth-app.workshops.mikebild.com.
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: auth-login
+              servicePort: 8080
+          - path: /home/*
+            backend:
+              serviceName: auth-home
+              servicePort: 8081

@@ -1,0 +1,25 @@
+{
+  "name": "components-library",
+  "private": true,
+  "version": "1.0.0",
+  "main": "src/components/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development reunify --port 5000 src/pages",
+    "start": "NODE_ENV=production reunify --port 5000 --host 0.0.0.0 src/pages",
+    "export": "NODE_ENV=production reunify export src/pages",
+    "serve": "npm run export && NODE_ENV=production static-server --port 5000 -n ./dist/404.html ./dist"
+  },
+  "reunify": {
+    "title": "Components Library"
+  },
+  "dependencies": {
+    "recompose": "^0.27.1",
+    "reunify": "6.1.1",
+    "static-server": "2.2.1",
+    "url-loader": "1.0.1"
+  },
+  "devDependencies": {
+    "refunk": "^3.0.1",
+    "styled-reset": "^1.3.5"
+  }
+}

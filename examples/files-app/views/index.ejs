@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>File Uploads</title>
+</head>
+
+<body>
+  <form ref='uploadForm' id='uploadForm' action='/upload' method='post' encType="multipart/form-data">
+    <input type="file" name="sampleFile" />
+    <input type='submit' value='Upload!' />
+  </form>
+  <ul>
+  <% for(const fileIndex in files) { %>
+    <li><a href="/files/<%= files[fileIndex] %>"><%= files[fileIndex] %></a></li>
+  <% } %>
+  </ul>
+</body>
+
+</html>

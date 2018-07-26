@@ -1,0 +1,15 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-job
+spec:
+  schedule: '*/1 * * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: simple-job
+              image: gcr.io/workshops-mikebild/simple-job:v1.0.0
+              command: ['npm', 'start']
+          restartPolicy: OnFailure

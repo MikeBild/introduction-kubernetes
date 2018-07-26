@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ingress-app-v2
+  labels:
+    app: ingress-app-v2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ingress-app-v2
+    spec:
+      containers:
+        - image: gcr.io/workshops-mikebild/ingress-app:v2.0.0
+          name: ingress-app-v2
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'
+          readinessProbe:
+            httpGet:
+              path: /api/2.0.0/info
+              port: 8080
+            periodSeconds: 1
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 10

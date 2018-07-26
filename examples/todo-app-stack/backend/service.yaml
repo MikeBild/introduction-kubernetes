@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-app-graphql
+  labels:
+    app: todo
+    tier: backend
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: todo-app-graphql.workshops.mikebild.com.
+spec:
+  selector:
+    app: todo
+    tier: backend
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080

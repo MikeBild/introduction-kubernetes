@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "ingress-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "racy dev",
+    "build": "racy build",
+    "serve": "racy serve",
+    "start": "NODE_ENV=production npm run build && npm run serve"
+  },
+  "dependencies": {
+    "racy": "^1.7.3"
+  }
+}

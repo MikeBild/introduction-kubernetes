@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: files-app
+  labels:
+    app: files
+    tier: frontend
+spec:
+  template:
+    metadata:
+      labels:
+        app: files
+        tier: frontend
+    spec:
+      containers:
+        - image: gcr.io/workshops-mikebild/files-app:v1.0.0
+          name: files-app
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: '8080'
+          volumeMounts:
+            - name: files-persistent-storage
+              mountPath: /app/files
+      volumes:
+        - name: files-persistent-storage
+          persistentVolumeClaim:
+            claimName: files-persistent-volume-claim

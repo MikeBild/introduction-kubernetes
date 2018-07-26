@@ -1,0 +1,27 @@
+{
+  "name": "products-app",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development reunify --port 7030 --basename products src/pages",
+    "start": "NODE_ENV=production reunify --port 7030 --host 0.0.0.0 --basename products src/pages",
+    "export": "NODE_ENV=production reunify export --out-dir ./products --basename products src/pages",
+    "serve": "npm run export && NODE_ENV=production static-server --port 7030 -n ./products/404.html"
+  },
+  "reunify": {
+    "title": "Products App"
+  },
+  "devDependencies": {
+    "components-library": "file:../components-library",
+    "react-markdown": "3.3.4",
+    "reunify": "6.1.1",
+    "static-server": "2.2.1",
+    "url-loader": "1.0.1",
+    "apollo-boost": "^0.1.10",
+    "cross-fetch": "^2.2.2",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.9.2",
+    "react-apollo": "^2.1.8"
+  }
+}

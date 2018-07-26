@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-fanout
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: web-static-ip
+    external-dns.alpha.kubernetes.io/hostname: ingress-app.workshops.mikebild.com.
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api/1.0.0/*
+            backend:
+              serviceName: ingress-app-v1
+              servicePort: v1-http
+          - path: /api/2.0.0/*
+            backend:
+              serviceName: ingress-app-v2
+              servicePort: v2-http

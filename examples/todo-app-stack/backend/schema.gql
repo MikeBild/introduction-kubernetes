@@ -1,0 +1,62 @@
+type Todo {
+  id: ID!
+  rev: ID!
+  description: String!
+  done: Boolean
+}
+
+type Query {
+  todos: [Todo]
+  todo(id: ID!): Todo
+}
+
+type TodoAddResult {
+  result: Todo
+  failure: TodoAddFailure
+}
+
+type ResetResult {
+  result: ResetStatus
+  failure: ResetFailure
+}
+
+type TodoToggleDoneResult {
+  result: Todo
+  failure: TodoToggleDoneFailure
+}
+
+type TodoRemoveResult {
+  result: Todo
+  failure: TodoRemoveFailure
+}
+
+type ResetStatus {
+  status: String!
+}
+
+type ResetFailure {
+  message: String!
+}
+
+type TodoToggleDoneFailure {
+  message: String!
+}
+
+type TodoRemoveFailure {
+  message: String!
+}
+
+type TodoAddFailure {
+  message: String!
+}
+
+input AddTodoInput {
+  description: String!
+}
+
+type Mutation {
+  todoAdd(input: AddTodoInput!): TodoAddResult
+  todoRemove(id: ID!): TodoRemoveResult
+  todoToggleDone(id: ID!): TodoToggleDoneResult
+  reset: ResetResult
+}

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: todo-app-couchdb
+  labels:
+    app: todo
+    tier: database
+spec:
+  template:
+    metadata:
+      labels:
+        app: todo
+        tier: database
+    spec:
+      containers:
+        - image: couchdb:2.2.0
+          name: couchdb
+          ports:
+            - containerPort: 5984

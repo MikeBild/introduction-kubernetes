@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-app-ui
+  labels:
+    app: todo
+    tier: frontend
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: todo-app-ui.workshops.mikebild.com.
+spec:
+  selector:
+    app: todo
+    tier: frontend
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
