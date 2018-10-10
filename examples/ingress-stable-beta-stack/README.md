@@ -41,5 +41,5 @@ kubectl delete -f deployment-v1.yaml -f deployment-v2.yaml -f service-v1.yaml -f
 ```
 
 ```bash
-gcloud compute addresses delete ingress-static-ip
+gcloud compute addresses delete ingress-static-ip --global
 ```
