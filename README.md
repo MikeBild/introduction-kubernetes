@@ -50,24 +50,24 @@ Die Tests lesen die Manifeste und prüfen die wichtigen Entscheidungen, für Kus
 
 | # | Lektion | ID | Übung |
 | --- | --- | --- | --- |
-| 01 | Kubernetes gleicht Soll und Ist ab | `k8s-cluster-kind` | [exercises/01-k8s-cluster-kind](exercises/01-k8s-cluster-kind) |
+| 01 | Kubernetes gleicht ständig Soll und Ist ab | `k8s-cluster-kind` | [exercises/01-k8s-cluster-kind](exercises/01-k8s-cluster-kind) |
 | 02 | Du startest Deployments, keine Pods | `k8s-deployments` | [exercises/02-k8s-deployments](exercises/02-k8s-deployments) |
 | 03 | Ein Service gibt Pods einen festen Namen | `k8s-services` | [exercises/03-k8s-services](exercises/03-k8s-services) |
 | 04 | Konfiguration gehört nicht ins Image | `k8s-config-secrets` | [exercises/04-k8s-config-secrets](exercises/04-k8s-config-secrets) |
-| 05 | Probes sagen Kubernetes, was mit dem Pod los ist | `k8s-probes` | [exercises/05-k8s-probes](exercises/05-k8s-probes) |
-| 06 | Ohne Requests plant der Scheduler blind | `k8s-resources` | [exercises/06-k8s-resources](exercises/06-k8s-resources) |
-| 07 | Ein Update ohne Downtime ist ein Rollout | `k8s-rolling-updates` | [exercises/07-k8s-rolling-updates](exercises/07-k8s-rolling-updates) |
-| 08 | Die Gateway API löst Ingress ab | `k8s-gateway-api` | [exercises/08-k8s-gateway-api](exercises/08-k8s-gateway-api) |
+| 05 | Probes sagen Kubernetes, wann ein Pod arbeitet | `k8s-probes` | [exercises/05-k8s-probes](exercises/05-k8s-probes) |
+| 06 | Requests planen, Limits begrenzen | `k8s-resources` | [exercises/06-k8s-resources](exercises/06-k8s-resources) |
+| 07 | Ein Update ohne Ausfall ist ein Rollout | `k8s-rolling-updates` | [exercises/07-k8s-rolling-updates](exercises/07-k8s-rolling-updates) |
+| 08 | Gateway API löst Ingress ab | `k8s-gateway-api` | [exercises/08-k8s-gateway-api](exercises/08-k8s-gateway-api) |
 
 ### Zusatzkapitel
 
 | # | Lektion | ID | Übung |
 | --- | --- | --- | --- |
 | 09 | Eine Basis, mehrere Umgebungen | `k8s-kustomize` | [exercises/09-k8s-kustomize](exercises/09-k8s-kustomize) |
-| 10 | Was passiert gerade im Cluster? | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
-| 11 | Jede Identität bekommt nur ihre Rechte | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
-| 12 | Erst alles verbieten, dann Wege erlauben | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
-| 13 | Der Namespace lässt nur sichere Pods zu | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
+| 10 | Was im Cluster passiert, zeigen Events, Logs und Metriken | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
+| 11 | Wer darf was im Cluster? | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
+| 12 | Im Cluster darf erst einmal jeder mit jedem reden | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
+| 13 | Ein Pod braucht weniger Rechte, als er bekommt | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
 
 Die Übungen 02 bis 08 bauen aufeinander auf: Der Startpunkt von 05 ist die Lösung von 04 und so weiter. Die Zusatzkapitel setzen den Stack aus 08 voraus, 11 bis 13 behandeln Sicherheit. Du kannst trotzdem bei jeder Nummer einsteigen.
 
