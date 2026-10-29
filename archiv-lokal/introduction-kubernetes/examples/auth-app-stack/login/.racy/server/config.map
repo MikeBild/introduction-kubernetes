@@ -1,0 +1,1 @@
+{"version":3,"sources":["config.js"],"names":["port","process","env"],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;eAAe;AACbA,EAAAA,IAAI,EAAEC,OAAO,CAACC,GAAR,CAAYF,IAAZ,IAAoB;AADb","file":"config.map","sourceRoot":"../..","sourcesContent":["export default {\n  port: process.env.port || 8080,\n};\n"]}
