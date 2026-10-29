@@ -1,0 +1,46 @@
+# Jede Identität bekommt genau die Rechte, die sie braucht – und nur in ihrem Namespace.
+
+# Die API selbst spricht nie mit der Kubernetes API: eigener ServiceAccount, kein Token.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: shop-api
+  namespace: werkstatt
+automountServiceAccountToken: false
+---
+# Die CI rollt neue Versionen aus. Sie braucht Deployments, aber keine Secrets.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: deployer
+  namespace: werkstatt
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployer
+  namespace: werkstatt
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "patch", "update"]
+  - apiGroups: ["apps"]
+    resources: ["replicasets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployer
+  namespace: werkstatt
+subjects:
+  - kind: ServiceAccount
+    name: deployer
+    namespace: werkstatt
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: deployer

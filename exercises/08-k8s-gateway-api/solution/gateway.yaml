@@ -1,0 +1,49 @@
+# Gateway API: drei Rollen, drei Objekte.
+# GatewayClass – welche Implementierung? (Plattform-Team)
+# Gateway      – welcher Eingang, welcher Port? (Cluster-Betrieb)
+# HTTPRoute    – welcher Pfad zu welchem Service? (App-Team)
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: werkstatt
+  namespace: werkstatt
+spec:
+  gatewayClassName: envoy
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: shop-api
+  namespace: werkstatt
+spec:
+  parentRefs:
+    - name: werkstatt
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      filters:
+        # /api/products wird zu /products – die API kennt das Präfix nicht.
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: shop-api
+          port: 80

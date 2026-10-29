@@ -1,0 +1,34 @@
+# TODO 3: Lies die ConfigMap mit envFrom ein.
+# TODO 4: Hol DB_PASSWORD per secretKeyRef aus dem Secret shop-db, Key POSTGRES_PASSWORD.
+# TODO 5: Setz DATABASE_URL aus $(DB_USER), $(DB_PASSWORD), $(DB_HOST) und $(DB_NAME) zusammen.
+# Du startest Deployments, keine Pods: Das Deployment hält zwei Replicas am Leben.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-api
+  namespace: werkstatt
+  labels:
+    app.kubernetes.io/name: shop-api
+    app.kubernetes.io/part-of: werkstatt-shop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: shop-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: shop-api
+        app.kubernetes.io/part-of: werkstatt-shop
+    spec:
+      containers:
+        - name: api
+          image: shop-api:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            # Vorläufig im Klartext – die Lektion zu ConfigMaps und Secrets räumt das auf.
+            - name: DATABASE_URL
+              value: postgres://postgres:werkstatt@postgres:5432/shop

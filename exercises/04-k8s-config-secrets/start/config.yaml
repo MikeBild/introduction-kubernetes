@@ -1,0 +1,9 @@
+# Konfiguration gehört nicht ins Image: Werte in die ConfigMap, Geheimnisse ins Secret.
+# TODO 1: ConfigMap shop-api-config im Namespace werkstatt.
+# TODO 2: Schlüssel PORT, DB_HOST, DB_NAME und DB_USER – das Passwort gehört nicht hierher.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shop-api-config
+  namespace: werkstatt
+data: {}

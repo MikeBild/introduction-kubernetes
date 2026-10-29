@@ -1,0 +1,20 @@
+# prod: drei Replicas, die freigegebene Version, mehr Speicher für Postgres.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: werkstatt-prod
+resources:
+  - ../../base
+replicas:
+  - name: shop-api
+    count: 3
+images:
+  - name: shop-api
+    newTag: 1.0.0
+patches:
+  - target:
+      kind: StatefulSet
+      name: postgres
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 1Gi

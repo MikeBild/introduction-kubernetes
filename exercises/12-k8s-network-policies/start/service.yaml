@@ -1,0 +1,18 @@
+# Ein Service gibt den Pods einen festen Namen und eine feste Adresse im Cluster.
+# Er wählt die Pods über Labels, nicht über Namen oder IPs.
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-api
+  namespace: werkstatt
+  labels:
+    app.kubernetes.io/name: shop-api
+    app.kubernetes.io/part-of: werkstatt-shop
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: shop-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

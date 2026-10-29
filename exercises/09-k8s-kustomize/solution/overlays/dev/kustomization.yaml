@@ -1,0 +1,12 @@
+# dev: eine Replica, die neueste Version, eigener Namespace.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: werkstatt-dev
+resources:
+  - ../../base
+replicas:
+  - name: shop-api
+    count: 1
+images:
+  - name: shop-api
+    newTag: 1.1.0

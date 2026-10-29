@@ -1,0 +1,9 @@
+# Ein Service gibt den Pods einen festen Namen und eine feste Adresse im Cluster.
+# TODO 1: type ClusterIP, Selector app.kubernetes.io/name: shop-api.
+# TODO 2: Port 80 mit Namen http, targetPort ist der benannte Port http des Containers.
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-api
+  namespace: werkstatt
+spec: {}

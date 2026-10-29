@@ -1,0 +1,12 @@
+# Du startest Deployments, keine Pods: Das Deployment hält zwei Replicas am Leben.
+# TODO 1: Deployment shop-api im Namespace werkstatt mit replicas: 2.
+# TODO 2: Selector und Pod-Labels: app.kubernetes.io/name: shop-api.
+# TODO 3: Container api mit Image shop-api:1.0.0 und imagePullPolicy: IfNotPresent.
+# TODO 4: containerPort 3000 mit dem Namen http.
+# TODO 5: DATABASE_URL=postgres://postgres:werkstatt@postgres:5432/shop als env.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-api
+  namespace: werkstatt
+spec: {}

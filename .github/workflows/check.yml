@@ -1,0 +1,63 @@
+name: check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+  kind:
+    # Wendet die Lösungen in einem echten kind-Cluster an – mit Probes, Rollout und Gateway.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: kind installieren
+        run: |
+          curl -fsSLo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
+          sudo install kind /usr/local/bin/kind
+      - name: 01 Cluster und Images
+        run: bash exercises/01-k8s-cluster-kind/solution/setup.sh
+      - name: 02 Deployments
+        working-directory: exercises/02-k8s-deployments/solution
+        run: |
+          kubectl apply -f .
+          kubectl -n werkstatt rollout status statefulset/postgres --timeout=5m
+          kubectl -n werkstatt rollout status deployment/shop-api --timeout=3m
+      - name: 03 Services
+        run: bash exercises/03-k8s-services/solution/try.sh
+      - name: 04 bis 06 Konfiguration, Probes, Ressourcen
+        run: |
+          kubectl apply -f exercises/04-k8s-config-secrets/solution
+          kubectl -n werkstatt rollout status deployment/shop-api --timeout=3m
+          kubectl apply -f exercises/05-k8s-probes/solution
+          kubectl -n werkstatt rollout status deployment/shop-api --timeout=3m
+          kubectl apply -f exercises/06-k8s-resources/solution
+          kubectl -n werkstatt rollout status deployment/shop-api --timeout=3m
+      - name: 07 Rolling Update ohne verlorene Requests
+        run: |
+          bash exercises/07-k8s-rolling-updates/solution/rollout.sh | tee rollout.log
+          grep -q 'fail=0' rollout.log
+      - name: 08 Gateway API
+        run: bash exercises/08-k8s-gateway-api/solution/gateway.sh
+      - name: 12 NetworkPolicies
+        run: |
+          bash exercises/12-k8s-network-policies/solution/verify.sh | tee verify.log
+          test "$(grep -c '^blockiert' verify.log)" = 2
+      - name: 13 Pod Security
+        run: |
+          kubectl delete namespace werkstatt --wait=true
+          kubectl apply -f exercises/13-k8s-pod-security/solution
+          kubectl -n werkstatt rollout status statefulset/postgres --timeout=5m
+          kubectl -n werkstatt rollout status deployment/shop-api --timeout=3m

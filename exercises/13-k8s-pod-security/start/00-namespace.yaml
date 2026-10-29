@@ -1,0 +1,7 @@
+# Angepasst: Pod Security Admission setzt im Namespace ein Profil durch.
+# TODO 1: Label pod-security.kubernetes.io/enforce: restricted, dazu enforce-version: latest
+#         und warn: restricted.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: werkstatt

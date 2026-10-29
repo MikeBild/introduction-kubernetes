@@ -1,0 +1,41 @@
+# Die API bekommt ihre Konfiguration aus ConfigMap und Secret, nicht aus dem Image.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-api
+  namespace: werkstatt
+  labels:
+    app.kubernetes.io/name: shop-api
+    app.kubernetes.io/part-of: werkstatt-shop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: shop-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: shop-api
+        app.kubernetes.io/part-of: werkstatt-shop
+    spec:
+      containers:
+        - name: api
+          image: shop-api:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          # Alle Schlüssel der ConfigMap als Umgebungsvariablen.
+          envFrom:
+            - configMapRef:
+                name: shop-api-config
+          env:
+            # Nur das Passwort aus dem Secret, nicht das ganze Secret.
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: shop-db
+                  key: POSTGRES_PASSWORD
+            # $(NAME) setzt Variablen ein, die vorher definiert sind.
+            - name: DATABASE_URL
+              value: postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)
