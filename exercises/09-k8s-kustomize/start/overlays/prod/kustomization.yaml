@@ -1,0 +1,7 @@
+# prod: drei Replicas, die freigegebene Version, mehr Speicher für Postgres.
+# TODO 5: namespace werkstatt-prod, replicas shop-api: 3, images shop-api: newTag 1.0.0.
+# TODO 6: Ein JSON-Patch auf das StatefulSet postgres setzt das Memory-Limit auf 1Gi.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base

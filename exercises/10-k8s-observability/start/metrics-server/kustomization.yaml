@@ -1,0 +1,6 @@
+# metrics-server liefert CPU und Speicher je Pod und Node – die Grundlage für kubectl top.
+# TODO 1: Nimm components.yaml von metrics-server v0.9.1 als Resource (URL siehe README).
+# TODO 2: Häng per JSON-Patch --kubelet-insecure-tls an die args des Containers – nur lokal in kind.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: []

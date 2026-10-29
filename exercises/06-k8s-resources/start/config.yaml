@@ -1,0 +1,14 @@
+# Konfiguration gehört nicht ins Image: Werte in die ConfigMap, Geheimnisse ins Secret.
+# Das Secret shop-db liegt schon in postgres.yaml – die API liest daraus nur das Passwort.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shop-api-config
+  namespace: werkstatt
+  labels:
+    app.kubernetes.io/name: shop-api
+data:
+  PORT: "3000"
+  DB_HOST: postgres
+  DB_NAME: shop
+  DB_USER: postgres

@@ -1,0 +1,48 @@
+# Ab Werk darf jeder Pod jeden Pod erreichen. Diese Policies drehen das um:
+# erst alles verbieten, dann genau die Wege erlauben, die der Shop braucht.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: werkstatt
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+---
+# Gateway → API: nur der Envoy-Proxy aus envoy-gateway-system, nur auf Port http.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-to-api
+  namespace: werkstatt
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: shop-api
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: envoy-gateway-system
+      ports:
+        - port: http
+---
+# API → Postgres: nur Pods der API, nur Port 5432.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-api-to-postgres
+  namespace: werkstatt
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgres
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: shop-api
+      ports:
+        - port: 5432

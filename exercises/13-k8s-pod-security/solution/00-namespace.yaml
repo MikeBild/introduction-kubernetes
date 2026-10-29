@@ -1,0 +1,10 @@
+# Angepasst: Pod Security Admission setzt im Namespace das Profil restricted durch.
+# Pods, die dagegen verstoßen, lehnt der API-Server schon beim Anlegen ab.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: werkstatt
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted

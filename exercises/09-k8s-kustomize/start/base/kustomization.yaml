@@ -1,0 +1,13 @@
+# Die Basis: alles, was in jeder Umgebung gleich ist.
+# TODO 1: namespace werkstatt und das Label app.kubernetes.io/part-of: werkstatt-shop für alle Objekte.
+# TODO 2: resources: 00-namespace.yaml, postgres.yaml, shop-api.yaml, service.yaml.
+# TODO 3: Ersetz config.yaml durch einen configMapGenerator shop-api-config mit denselben Literalen
+#         und lösch config.yaml danach.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - 00-namespace.yaml
+  - postgres.yaml
+  - config.yaml
+  - shop-api.yaml
+  - service.yaml

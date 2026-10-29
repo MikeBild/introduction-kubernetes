@@ -1,0 +1,21 @@
+# Die Basis: alles, was in jeder Umgebung gleich ist.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: werkstatt
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: werkstatt-shop
+resources:
+  - 00-namespace.yaml
+  - postgres.yaml
+  - shop-api.yaml
+  - service.yaml
+# Die ConfigMap entsteht aus Literalen. Kustomize hängt einen Hash an den Namen –
+# ändert sich ein Wert, ändert sich der Name, und das Deployment rollt neu aus.
+configMapGenerator:
+  - name: shop-api-config
+    literals:
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_NAME=shop
+      - DB_USER=postgres

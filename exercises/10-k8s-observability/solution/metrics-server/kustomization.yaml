@@ -1,0 +1,15 @@
+# metrics-server liefert CPU und Speicher je Pod und Node – die Grundlage für kubectl top.
+# kind-Kubelets haben selbstsignierte Zertifikate. Nur lokal deshalb --kubelet-insecure-tls.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.9.1/components.yaml
+patches:
+  - target:
+      kind: Deployment
+      name: metrics-server
+      namespace: kube-system
+    patch: |
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --kubelet-insecure-tls
