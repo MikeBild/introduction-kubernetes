@@ -1,4 +1,4 @@
-# 07 · Ein Update ohne Downtime ist ein Rollout
+# 07 · Ein Update ohne Ausfall ist ein Rollout
 
 Lektion `k8s-rolling-updates`. Du rollst `shop-api:1.1.0` aus, während ein Pod im Cluster dauernd Requests schickt, und rollst wieder zurück. Kein Request darf scheitern.
 
