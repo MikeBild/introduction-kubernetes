@@ -5,7 +5,7 @@ const api = lazy(() => container(find(manifests(`${import.meta.dirname}/..`), 'D
 const requests = lazy(() => api.resources.requests)
 const limits = lazy(() => api.resources.limits)
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('06 Ressourcen', () => {
   it('reserviert CPU und Speicher per Request', () => {
     expect(requests).toEqual({ cpu: '100m', memory: '512Mi' })

@@ -6,7 +6,7 @@ const dir = `${import.meta.dirname}/..`
 const dev = lazy(() => kustomize(`${dir}/overlays/dev`))
 const prod = lazy(() => kustomize(`${dir}/overlays/prod`))
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('09 Kustomize', () => {
   it('legt jede Umgebung in einen eigenen Namespace', () => {
     for (const [objects, ns] of [[dev, 'werkstatt-dev'], [prod, 'werkstatt-prod']] as const) {

@@ -46,7 +46,7 @@ for (const exercise of readdirSync(exercises)) {
   for (const file of readdirSync(tests)) {
     const skipped = readFileSync(join(tests, file), 'utf8').replace(
       /^describe\(/m,
-      '// Entferne .skip, wenn du loslegst.\ndescribe.skip(',
+      '// Entferne .skip, wenn du mit der Übung beginnst.\ndescribe.skip(',
     )
     write(join(exercises, exercise, 'start', 'test', file), skipped)
   }

@@ -5,7 +5,7 @@ const dir = `${import.meta.dirname}/..`
 const kustomization = lazy(() => parse(read(`${dir}/metrics-server`, 'kustomization.yaml'))[0]!)
 const observe = script(dir, 'observe.sh')
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('10 Observability', () => {
   it('installiert metrics-server in einer festen Version', () => {
     expect(kustomization.resources).toEqual([

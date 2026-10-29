@@ -6,7 +6,7 @@ const config = lazy(() => find(objects, 'ConfigMap', 'shop-api-config'))
 const api = lazy(() => container(find(objects, 'Deployment', 'shop-api')))
 const env = (name: string) => api.env?.find((e: { name: string }) => e.name === name)
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('04 ConfigMaps und Secrets', () => {
   it('hält Werte ohne Geheimnisse in der ConfigMap', () => {
     expect(Object.keys(config.data).sort()).toEqual(['DB_HOST', 'DB_NAME', 'DB_USER', 'PORT'])

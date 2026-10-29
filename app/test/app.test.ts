@@ -51,7 +51,7 @@ afterAll(() => close())
 const post = (path: string, body: unknown) =>
   fetch(`${base}${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
 
-describe('Werkstatt-Shop API', () => {
+describe('Werkstatt-Shop-API', () => {
   it('berechnet Summen in ganzen Cent', () => {
     expect(totalCents([{ productId: products[0]!.id, quantity: 3, priceCents: 1990 }])).toBe(5970)
   })

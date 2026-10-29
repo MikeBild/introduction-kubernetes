@@ -7,7 +7,7 @@ const service = lazy(() => find(objects, 'Service', 'shop-api'))
 const deployment = lazy(() => find(objects, 'Deployment', 'shop-api'))
 const tryIt = script(dir, 'try.sh')
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('03 Services', () => {
   it('ist ein ClusterIP-Service im Namespace werkstatt', () => {
     expect(service.metadata.namespace).toBe('werkstatt')

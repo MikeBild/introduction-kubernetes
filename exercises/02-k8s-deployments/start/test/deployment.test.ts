@@ -5,7 +5,7 @@ const objects = lazy(() => manifests(`${import.meta.dirname}/..`))
 const deployment = lazy(() => find(objects, 'Deployment', 'shop-api'))
 const api = lazy(() => container(deployment))
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('02 Deployments', () => {
   it('liegt im Namespace werkstatt und hält zwei Replicas', () => {
     expect(deployment.metadata.namespace).toBe('werkstatt')
