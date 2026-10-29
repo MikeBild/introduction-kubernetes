@@ -25,7 +25,7 @@ bash rollout.sh
 
 - `maxUnavailable: 0` hält immer alle drei Replicas bereit, `maxSurge: 1` startet einen zusätzlichen Pod.
 - Die Readiness Probe aus Übung 05 entscheidet, wann ein neuer Pod Traffic bekommt.
-- Beim Stoppen bekommt der Pod SIGTERM, während Service und Gateway ihn noch kurz im Routing haben. Der `preStop`-Hook mit `sleep` wartet diese Zeit ab, bevor die API herunterfährt. Die `sleep`-Action ist seit Kubernetes 1.34 GA und braucht keine Shell im Image – wichtig für Distroless.
+- Beim Stoppen bekommt der Pod SIGTERM, während Service und Gateway ihn noch kurz im Routing haben. Der `preStop`-Hook mit `sleep` wartet diese Zeit ab, bevor die API herunterfährt. Die `sleep`-Action ist seit Kubernetes 1.34 stabil (GA, General Availability) und braucht keine Shell im Image – wichtig für Distroless.
 
 `kubectl rollout undo` ändert das Deployment am Manifest vorbei. Hält dein Git-Repo den Soll-Zustand, setz die alte Version danach auch dort.
 

@@ -5,7 +5,7 @@ const dir = `${import.meta.dirname}/..`
 const config = lazy(() => parse(read(dir, 'kind-config.yaml'))[0]!)
 const setup = script(dir, 'setup.sh')
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('01 Cluster mit kind', () => {
   it('beschreibt einen Control Plane Node und zwei Worker Nodes', () => {
     const roles = config.nodes.map((node: { role: string }) => node.role)

@@ -6,7 +6,7 @@ const gatewayClass = lazy(() => find(objects, 'GatewayClass', 'envoy'))
 const gateway = lazy(() => find(objects, 'Gateway', 'werkstatt'))
 const route = lazy(() => find(objects, 'HTTPRoute', 'shop-api'))
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('08 Gateway API', () => {
   it('nutzt die stabile API gateway.networking.k8s.io/v1', () => {
     for (const obj of [gatewayClass, gateway, route]) expect(obj.apiVersion).toBe('gateway.networking.k8s.io/v1')

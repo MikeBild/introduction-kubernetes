@@ -3,7 +3,7 @@ import { container, find, lazy, manifests } from '../../../../scripts/lib/manife
 
 const api = lazy(() => container(find(manifests(`${import.meta.dirname}/..`), 'Deployment', 'shop-api')))
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('05 Probes', () => {
   it('wartet mit einer Startup Probe, bis der Prozess antwortet', () => {
     expect(api.startupProbe.httpGet).toEqual({ path: '/livez', port: 'http' })

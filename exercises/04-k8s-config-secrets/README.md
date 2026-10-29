@@ -23,7 +23,7 @@ kubectl -n werkstatt get secret shop-db -o jsonpath='{.data.POSTGRES_PASSWORD}' 
 - `kubectl -n werkstatt exec deployment/shop-api -- /nodejs/bin/node -e "console.log(process.env.DATABASE_URL)"` zeigt die zusammengesetzte URL.
 - Die Pods werden `Ready`, die API erreicht also Postgres.
 
-Ein Secret ist nur Base64-kodiert, nicht verschlüsselt. Schütz es mit RBAC, aktiviere Encryption at Rest im Cluster und leg echte Secrets nie im Klartext ins Git-Repo – nutz dafür etwa External Secrets oder Sealed Secrets.
+Ein Secret ist nur Base64-kodiert, nicht verschlüsselt. Schütz es mit RBAC (Role-Based Access Control), aktiviere Encryption at Rest im Cluster und leg echte Secrets nie im Klartext ins Git-Repo – nutz dafür etwa External Secrets oder Sealed Secrets.
 
 Ändert sich eine ConfigMap, die per `envFrom` eingelesen wird, merken laufende Pods das nicht. Starte sie mit `kubectl -n werkstatt rollout restart deployment/shop-api` neu. Kustomize löst das mit einem Hash im Namen, siehe Übung 09.
 

@@ -7,7 +7,7 @@ const pod = lazy(() => find(objects, 'Deployment', 'shop-api').spec.template.spe
 const api = lazy(() => container(find(objects, 'Deployment', 'shop-api')))
 const postgres = lazy(() => find(objects, 'StatefulSet', 'postgres').spec.template.spec)
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('13 Pod Security', () => {
   it('setzt im Namespace das Profil restricted durch', () => {
     expect(namespace.metadata.labels).toMatchObject({

@@ -1,30 +1,75 @@
 # Übungen: Kubernetes
 
-Übungs-Repo zum zweiten Teil des Workshops **„Docker & Kubernetes“** ([workshops.mikebild.dev](https://workshops.mikebild.dev)). Zu jeder Kubernetes-Lektion findest du hier eine Aufgabe mit Startpunkt, Lösung und Tests. Alle Übungen drehen sich um dieselbe Anwendung, die Werkstatt-Shop-API: Produkte, Bestellungen mit Positionen aus `productId`, `quantity` und `priceCents`, Geld immer in ganzen Cent.
+Übungs-Repo zum zweiten Teil des Workshops „Docker & Kubernetes“. Zu jeder Kubernetes-Lektion findest du hier eine Übung mit Startpunkt, Tests und Lösung. Alle Übungen drehen sich um dieselbe Anwendung, die Werkstatt-Shop-API: Produkte, Bestellungen mit Positionen aus `productId`, `quantity` und `priceCents`, Geld immer in ganzen Cent.
 
-Den Docker-Teil findest du in [MikeBild/introduction-docker](https://github.com/MikeBild/introduction-docker). Die Folien stehen unter [slides.mikebild.dev](https://slides.mikebild.dev/introduction-kubernetes.html).
+## Was du lernst
 
-**Stack (Oktober 2026):** Kubernetes 1.37 lokal mit kind v0.33 · Gateway API v1.6 mit Envoy Gateway v1.9 · Kustomize in kubectl · metrics-server v0.9 · Node.js 26 im Distroless-Image · Express 5 · Postgres 18 · TypeScript strict als ESM · Vitest
+- Einen lokalen Cluster mit kind anlegen und die API als Deployment betreiben
+- Services, Konfiguration, Probes, Ressourcen und Rollouts ohne Downtime
+- Gateway API, Kustomize, Observability und Absicherung mit Rechten und Policies
 
-## Vorbereitung
+## Voraussetzungen
+
+Den Docker-Teil des Workshops findest du in [MikeBild/introduction-docker](https://github.com/MikeBild/introduction-docker).
 
 1. **Docker** – Docker Desktop oder Docker Engine. kind startet jeden Node als Container.
 2. **kind** und **kubectl** – `brew install kind kubectl` oder die Anleitungen auf [kind.sigs.k8s.io](https://kind.sigs.k8s.io/docs/user/quick-start/) und [kubernetes.io](https://kubernetes.io/docs/tasks/tools/). kubectl bringt Kustomize schon mit.
-3. **Node.js 26** für die Tests – `nvm use` liest die Version aus [`.nvmrc`](.nvmrc).
-4. Repo klonen, Abhängigkeiten installieren, alles prüfen:
+3. **Node.js 26** – `nvm use` liest die Version aus [`.nvmrc`](.nvmrc). Node.js brauchst du für die Tests.
 
-   ```bash
-   git clone https://github.com/MikeBild/introduction-kubernetes.git
-   cd introduction-kubernetes
-   npm ci
-   npm run check        # tsc, Vitest und Abgleich der gegebenen Manifeste – ohne Cluster
-   ```
+**Stack (Oktober 2026):** Kubernetes 1.37 lokal mit kind v0.33 · Gateway API v1.6 mit Envoy Gateway v1.9 · Kustomize in kubectl · metrics-server v0.9 · Node.js 26 im Distroless-Image · Express 5 · Postgres 18 · TypeScript strict als ESM · Vitest
 
-5. Cluster anlegen und Images laden – das ist Übung 01:
+## Einrichten
 
-   ```bash
-   bash exercises/01-k8s-cluster-kind/solution/setup.sh
-   ```
+Repo klonen, Abhängigkeiten installieren, alles prüfen:
+
+```bash
+git clone https://github.com/MikeBild/introduction-kubernetes.git
+cd introduction-kubernetes
+npm ci
+npm run check        # tsc, Vitest und Abgleich der gegebenen Manifeste – ohne Cluster
+```
+
+Cluster anlegen und Images laden – das ist Übung 01:
+
+```bash
+bash exercises/01-k8s-cluster-kind/solution/setup.sh
+```
+
+## So arbeitest du mit einer Übung
+
+1. Lies die README der Übung und ergänze die Dateien in `start/` an den TODO-Kommentaren.
+2. Wende die Manifeste mit `kubectl apply -f .` an oder führe das Skript der Übung aus.
+3. Entferne in `start/test/*.test.ts` das `.skip` und führe `npx vitest exercises/<nr>/start` aus.
+4. Vergleiche mit der Lösung in `solution/`.
+
+Jede Übung ist eigenständig: `cd exercises/<nr>/start` und `kubectl apply -f .` reichen. Die gegebenen Manifeste liegen deshalb als Kopie in jedem Ordner. Änderst du `app/k8s/`, verteilt `npm run sync` die Kopien neu; `npm run check` meldet veraltete Kopien.
+
+Die Tests lesen die Manifeste und prüfen die wichtigen Entscheidungen, für Kustomize rendern sie mit `kubectl kustomize`. Einen Cluster brauchen sie nicht. Ob alles wirklich läuft, zeigen dir die Skripte in den Übungen; die CI wendet die Lösungen 02 bis 08 in einem kind-Cluster an.
+
+## Übungen
+
+| # | Lektion | ID | Übung |
+| --- | --- | --- | --- |
+| 01 | Kubernetes gleicht Soll und Ist ab | `k8s-cluster-kind` | [exercises/01-k8s-cluster-kind](exercises/01-k8s-cluster-kind) |
+| 02 | Du startest Deployments, keine Pods | `k8s-deployments` | [exercises/02-k8s-deployments](exercises/02-k8s-deployments) |
+| 03 | Ein Service gibt Pods einen festen Namen | `k8s-services` | [exercises/03-k8s-services](exercises/03-k8s-services) |
+| 04 | Konfiguration gehört nicht ins Image | `k8s-config-secrets` | [exercises/04-k8s-config-secrets](exercises/04-k8s-config-secrets) |
+| 05 | Probes sagen Kubernetes, was mit dem Pod los ist | `k8s-probes` | [exercises/05-k8s-probes](exercises/05-k8s-probes) |
+| 06 | Ohne Requests plant der Scheduler blind | `k8s-resources` | [exercises/06-k8s-resources](exercises/06-k8s-resources) |
+| 07 | Ein Update ohne Downtime ist ein Rollout | `k8s-rolling-updates` | [exercises/07-k8s-rolling-updates](exercises/07-k8s-rolling-updates) |
+| 08 | Die Gateway API löst Ingress ab | `k8s-gateway-api` | [exercises/08-k8s-gateway-api](exercises/08-k8s-gateway-api) |
+
+### Zusatzkapitel
+
+| # | Lektion | ID | Übung |
+| --- | --- | --- | --- |
+| 09 | Eine Basis, mehrere Umgebungen | `k8s-kustomize` | [exercises/09-k8s-kustomize](exercises/09-k8s-kustomize) |
+| 10 | Was passiert gerade im Cluster? | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
+| 11 | Jede Identität bekommt nur ihre Rechte | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
+| 12 | Erst alles verbieten, dann Wege erlauben | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
+| 13 | Der Namespace lässt nur sichere Pods zu | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
+
+Die Übungen 02 bis 08 bauen aufeinander auf: Der Startpunkt von 05 ist die Lösung von 04 und so weiter. Die Zusatzkapitel setzen den Stack aus 08 voraus, 11 bis 13 behandeln Sicherheit. Du kannst trotzdem bei jeder Nummer einsteigen.
 
 ## Warum kind, Gateway API und Kustomize?
 
@@ -45,41 +90,17 @@ exercises/
       00-namespace.yaml  gegeben, wird zuerst angewendet
       postgres.yaml      gegeben
       shop-api.yaml      deine Aufgabe
-      test/*.test.ts     Tests mit describe.skip – entferne .skip, wenn du loslegst
+      test/*.test.ts     Tests mit describe.skip – entferne .skip, wenn du mit der Übung beginnst
     solution/            eine mögliche Lösung, gleiche Struktur
 legacy/2018/             das Material von 2018, nur als Archiv
 ```
-
-Jede Übung ist eigenständig: `cd exercises/<nr>/start` und `kubectl apply -f .` reichen. Die gegebenen Manifeste liegen deshalb als Kopie in jedem Ordner. Änderst du `app/k8s/`, verteilt `npm run sync` die Kopien neu; `npm run check` meldet veraltete Kopien.
-
-Die Tests lesen die Manifeste und prüfen die wichtigen Entscheidungen, für Kustomize rendern sie mit `kubectl kustomize`. Einen Cluster brauchen sie nicht. Ob alles wirklich läuft, zeigen dir die Skripte in den Übungen; die CI wendet die Lösungen 02 bis 08 in einem kind-Cluster an.
-
-## Lektionen
-
-| Block | # | Lektion | Baustein | Übung |
-| --- | --- | --- | --- | --- |
-| Kubernetes | 01 | Kubernetes gleicht Soll und Ist ab | `k8s-cluster-kind` | [exercises/01-k8s-cluster-kind](exercises/01-k8s-cluster-kind) |
-| Kubernetes | 02 | Du startest Deployments, keine Pods | `k8s-deployments` | [exercises/02-k8s-deployments](exercises/02-k8s-deployments) |
-| Kubernetes | 03 | Ein Service gibt Pods einen festen Namen | `k8s-services` | [exercises/03-k8s-services](exercises/03-k8s-services) |
-| Kubernetes | 04 | Konfiguration gehört nicht ins Image | `k8s-config-secrets` | [exercises/04-k8s-config-secrets](exercises/04-k8s-config-secrets) |
-| Kubernetes | 05 | Probes sagen Kubernetes, was mit dem Pod los ist | `k8s-probes` | [exercises/05-k8s-probes](exercises/05-k8s-probes) |
-| Kubernetes | 06 | Ohne Requests plant der Scheduler blind | `k8s-resources` | [exercises/06-k8s-resources](exercises/06-k8s-resources) |
-| Kubernetes | 07 | Ein Update ohne Downtime ist ein Rollout | `k8s-rolling-updates` | [exercises/07-k8s-rolling-updates](exercises/07-k8s-rolling-updates) |
-| Kubernetes | 08 | Die Gateway API löst Ingress ab | `k8s-gateway-api` | [exercises/08-k8s-gateway-api](exercises/08-k8s-gateway-api) |
-| Zusatz | 09 | Eine Basis, mehrere Umgebungen | `k8s-kustomize` | [exercises/09-k8s-kustomize](exercises/09-k8s-kustomize) |
-| Zusatz | 10 | Was passiert gerade im Cluster? | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
-| Sicherheit | 11 | Jede Identität bekommt nur ihre Rechte | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
-| Sicherheit | 12 | Erst alles verbieten, dann Wege erlauben | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
-| Sicherheit | 13 | Der Namespace lässt nur sichere Pods zu | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
-
-Die Übungen 02 bis 08 bauen aufeinander auf: Der Startpunkt von 05 ist die Lösung von 04 und so weiter. Die Zusatzkapitel setzen den Stack aus 08 voraus. Du kannst trotzdem bei jeder Nummer einsteigen.
 
 ## Pakete
 
 Die App nutzt drei Pakete, jedes mit einem Grund:
 
 - `express` 5 – HTTP-Routing; Fehler aus async Handlern landen ohne Zusatzpaket im Error Handler.
-- `postgres` (postgres.js) – SQL als Tagged Template, Parameter nie im SQL-Text, Pool und Transactions eingebaut.
+- `postgres` (postgres.js) – SQL als Tagged Template, Parameter nie im SQL-Text, Pool und Transaktionen eingebaut.
 - `zod` 4 – dasselbe Schema für Bestellungen wie im Frontend des Werkstatt-Shops.
 
 Dazu für die Entwicklung: `typescript`, `vitest`, `@types/node`, `@types/express` und `yaml` für die Tests der Manifeste.
@@ -91,9 +112,14 @@ kind delete cluster --name werkstatt
 docker image rm shop-api:1.0.0 shop-api:1.1.0
 ```
 
-## Altes Material von 2018
+## Workshop und Folien
 
-Die erste Fassung von 2018 (Minikube, Google Cloud, Ingress mit nginx, Node.js mit Yarn) liegt unverändert unter [`legacy/2018/`](legacy/2018/). Sie ist nur noch als Archiv gedacht und wird weder gebaut noch getestet.
+- Workshop: [„Docker & Kubernetes“](https://workshops.mikebild.dev/w/docker-kubernetes/remote/)
+- Folien: [slides.mikebild.dev/introduction-kubernetes](https://slides.mikebild.dev/introduction-kubernetes.html)
+
+## Archiv
+
+Die erste Fassung von 2018 (Minikube, Google Cloud, Ingress mit nginx, Node.js mit Yarn) liegt unverändert unter [`legacy/2018/`](legacy/2018/) und wird weder gebaut noch getestet.
 
 ## Lizenz
 

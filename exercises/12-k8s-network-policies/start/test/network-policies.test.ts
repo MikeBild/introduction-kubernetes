@@ -6,7 +6,7 @@ const deny = lazy(() => find(objects, 'NetworkPolicy', 'default-deny-ingress'))
 const toApi = lazy(() => find(objects, 'NetworkPolicy', 'allow-gateway-to-api'))
 const toDb = lazy(() => find(objects, 'NetworkPolicy', 'allow-api-to-postgres'))
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('12 NetworkPolicies', () => {
   it('verbietet zuerst jeden eingehenden Traffic im Namespace', () => {
     expect(deny.spec).toEqual({ podSelector: {}, policyTypes: ['Ingress'] })

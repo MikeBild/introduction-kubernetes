@@ -7,7 +7,7 @@ const role = lazy(() => find(objects, 'Role', 'deployer'))
 const binding = lazy(() => find(objects, 'RoleBinding', 'deployer'))
 const canI = script(dir, 'can-i.sh')
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('11 RBAC', () => {
   it('gibt der API einen eigenen ServiceAccount ohne Token', () => {
     expect(find(objects, 'ServiceAccount', 'shop-api').automountServiceAccountToken).toBe(false)

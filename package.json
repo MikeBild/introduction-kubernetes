@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "description": "Übungen zum Workshop Docker & Kubernetes: Deployments, Services, Probes, Rolling Updates, Gateway API, Kustomize und Sicherheit",
-  "homepage": "https://workshops.mikebild.dev",
+  "homepage": "https://workshops.mikebild.dev/w/docker-kubernetes/remote/",
   "license": "MIT",
   "type": "module",
   "engines": {

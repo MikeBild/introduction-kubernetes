@@ -22,7 +22,7 @@ export const lazy = <T extends object>(load: () => T): T => {
 
 export const read =(dir: string, file: string): string => {
   const path = join(dir, file)
-  if (!existsSync(path)) throw new Error(`${file} fehlt in ${dir}`)
+  if (!existsSync(path)) throw new Error(`${file} fehlt in ${dir}. Leg die Datei dort an, die README der Übung nennt den Inhalt.`)
   return readFileSync(path, 'utf8')
 }
 
@@ -44,13 +44,13 @@ export const kustomize = (dir: string): K8sObject[] =>
 
 export const find = (objects: K8sObject[], kind: string, name: string): K8sObject => {
   const found = objects.find((obj) => obj.kind === kind && obj.metadata.name === name)
-  if (!found) throw new Error(`${kind}/${name} fehlt`)
+  if (!found) throw new Error(`${kind}/${name} fehlt. Ergänze das Objekt in den Manifesten der Übung.`)
   return found
 }
 
 export const container = (deployment: K8sObject, name = 'api') => {
   const found = deployment.spec.template.spec.containers.find((c: { name: string }) => c.name === name)
-  if (!found) throw new Error(`Container ${name} fehlt in ${deployment.metadata.name}`)
+  if (!found) throw new Error(`Container ${name} fehlt in ${deployment.metadata.name}. Ergänze ihn unter spec.template.spec.containers.`)
   return found
 }
 

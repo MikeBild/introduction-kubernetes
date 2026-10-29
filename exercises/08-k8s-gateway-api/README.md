@@ -29,7 +29,7 @@ bash gateway.sh
 - `curl localhost:8080/admin` liefert 404: Es gibt keine Route.
 - `kubectl -n werkstatt get gateway` zeigt `PROGRAMMED False` mit dem Grund `AddressNotAssigned`.
 
-Der letzte Punkt ist lokal erwartet: Envoy Gateway legt je Gateway einen Service vom Typ `LoadBalancer` an. In der Cloud vergibt der Provider die Adresse, in kind tut das niemand. Deshalb testest du per `port-forward`. Wer lokal eine echte Adresse will, startet [cloud-provider-kind](https://github.com/kubernetes-sigs/cloud-provider-kind).
+Der letzte Punkt ist lokal erwartet: Envoy Gateway legt je Gateway einen Service vom Typ `LoadBalancer` an. In der Cloud vergibt der Provider die Adresse, in kind tut das niemand. Deshalb testest du per `port-forward`. Willst du lokal eine echte Adresse, starte [cloud-provider-kind](https://github.com/kubernetes-sigs/cloud-provider-kind).
 
 Entferne in `start/test/gateway.test.ts` das `.skip` und führe `npx vitest exercises/08-k8s-gateway-api/start` aus.
 

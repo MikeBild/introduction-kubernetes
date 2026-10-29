@@ -6,7 +6,7 @@ const deployment = lazy(() => find(manifests(dir), 'Deployment', 'shop-api'))
 const api = lazy(() => container(deployment))
 const rollout = script(dir, 'rollout.sh')
 
-// Entferne .skip, wenn du loslegst.
+// Entferne .skip, wenn du mit der Übung beginnst.
 describe.skip('07 Rolling Updates', () => {
   it('rollt Pod für Pod aus, ohne Kapazität zu verlieren', () => {
     expect(deployment.spec.replicas).toBe(3)
