@@ -64,7 +64,7 @@ Die Tests lesen die Manifeste und prüfen die wichtigen Entscheidungen, für Kus
 | # | Lektion | ID | Übung |
 | --- | --- | --- | --- |
 | 09 | Eine Basis, mehrere Umgebungen | `k8s-kustomize` | [exercises/09-k8s-kustomize](exercises/09-k8s-kustomize) |
-| 10 | Was im Cluster passiert, zeigen Events, Logs und Metriken | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
+| 10 | Was im Cluster passiert, zeigen Events, Logs und Metrics | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
 | 11 | Wer darf was im Cluster? | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
 | 12 | Im Cluster darf erst einmal jeder mit jedem reden | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
 | 13 | Ein Pod braucht weniger Rechte, als er bekommt | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
