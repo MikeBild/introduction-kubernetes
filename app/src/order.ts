@@ -32,7 +32,7 @@ export type PriceResult =
   | { ok: true; items: OrderItem[] }
   | { ok: false; reason: 'unknown-product' | 'out-of-stock'; productId: string }
 
-// Reine Funktion: Positionen mit aktuellem Preis und Bestand prüfen.
+// Pure Function: Positionen mit aktuellem Preis und Bestand prüfen.
 export const priceItems = (input: PlaceOrderInput, products: readonly Product[]): PriceResult => {
   const byId = new Map(products.map((product) => [product.id as string, product]))
   const items: OrderItem[] = []
