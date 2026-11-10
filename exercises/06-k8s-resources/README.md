@@ -1,13 +1,15 @@
-# 06 · Ohne Requests plant der Scheduler blind
+*English · [Deutsch](README.de.md)*
 
-Lektion `k8s-resources`. Du gibst der API Requests und ein Memory-Limit, passend zum Heap von Node.js.
+# 06 · Without requests, the scheduler schedules blindly
 
-## Aufgabe
+Lesson `k8s-resources`. You give the API requests and a memory limit that match the Node.js heap.
 
-Ergänze in [`start/shop-api.yaml`](start/shop-api.yaml) am Container `api`:
+## Task
+
+In [`start/shop-api.yaml`](start/shop-api.yaml), add to the container `api`:
 
 1. `resources.requests`: `cpu: 100m`, `memory: 512Mi`.
-2. `resources.limits`: `memory: 512Mi`, kein CPU-Limit.
+2. `resources.limits`: `memory: 512Mi`, no CPU limit.
 
 ```bash
 cd exercises/06-k8s-resources/start
@@ -18,21 +20,21 @@ kubectl -n werkstatt exec deployment/shop-api -- /nodejs/bin/node \
   -e "console.log(require('v8').getHeapStatistics().heap_size_limit / 1048576)"
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- `describe node` zählt die Requests der API-Pods unter `Allocated resources`.
-- Der Heap von Node.js liegt bei rund 268 MB, also etwa der Hälfte des Limits.
-- `kubectl -n werkstatt get pod -l app.kubernetes.io/name=shop-api -o jsonpath='{.items[0].status.qosClass}'` zeigt `Burstable`.
+- `describe node` counts the requests of the API Pods under `Allocated resources`.
+- The Node.js heap is around 268 MB, about half of the limit.
+- `kubectl -n werkstatt get pod -l app.kubernetes.io/name=shop-api -o jsonpath='{.items[0].status.qosClass}'` shows `Burstable`.
 
-## Warum so?
+## Why this way?
 
-- **Requests** reserviert der Scheduler auf dem Node. Ohne Requests plant er blind.
-- **Memory-Limit gleich Request:** Überschreitet der Container das Limit, beendet der Kernel ihn (`OOMKilled`). Mit Limit gleich Request rechnest du nie mit Speicher, den der Node nicht garantiert.
-- **Kein CPU-Limit:** Ein CPU-Limit bremst den Prozess auch dann, wenn der Node frei ist. Der CPU-Request sichert dir trotzdem deinen Anteil.
-- **Heap von Node.js 26:** Node.js liest das Limit aus der cgroup und nimmt etwa die Hälfte als Heap, aber nie weniger als rund 256 MB. Gemessen: Limit 512Mi ergibt 268 MB, 1Gi ergibt 536 MB, 256Mi ergibt trotzdem 262 MB. Unter 512Mi ist der Heap also größer als die Hälfte, und der Container läuft Gefahr, vor dem Garbage Collector am Limit zu scheitern. Brauchst du weniger als 512Mi, setz den Heap selbst: `NODE_OPTIONS=--max-old-space-size=160` bei einem Limit von 256Mi.
+- **Requests** are what the scheduler reserves on the node. Without requests it schedules blindly.
+- **Memory limit equal to request:** If the container exceeds the limit, the kernel kills it (`OOMKilled`). With limit equal to request, you never count on memory the node does not guarantee.
+- **No CPU limit:** A CPU limit throttles the process even when the node is idle. The CPU request still secures your share.
+- **Node.js 26 heap:** Node.js reads the limit from the cgroup and takes about half of it as heap, but never less than roughly 256 MB. Measured: a limit of 512Mi yields 268 MB, 1Gi yields 536 MB, 256Mi still yields 262 MB. Below 512Mi the heap is therefore larger than half, and the container risks hitting the limit before the garbage collector steps in. If you need less than 512Mi, set the heap yourself: `NODE_OPTIONS=--max-old-space-size=160` with a limit of 256Mi.
 
-Entferne in `start/test/resources.test.ts` das `.skip` und führe `npx vitest exercises/06-k8s-resources/start` aus.
+Remove the `.skip` in `start/test/resources.test.ts` and run `npx vitest exercises/06-k8s-resources/start`.
 
-## Lösung
+## Reference solution
 
 [`solution/shop-api.yaml`](solution/shop-api.yaml)

@@ -5,29 +5,29 @@ const objects = lazy(() => manifests(`${import.meta.dirname}/..`))
 const deployment = lazy(() => find(objects, 'Deployment', 'shop-api'))
 const api = lazy(() => container(deployment))
 
-// Entferne .skip, wenn du mit der Übung beginnst.
+// Remove .skip when you start the exercise.
 describe.skip('02 Deployments', () => {
-  it('liegt im Namespace werkstatt und hält zwei Replicas', () => {
+  it('lives in the namespace werkstatt and keeps two replicas', () => {
     expect(deployment.metadata.namespace).toBe('werkstatt')
     expect(deployment.spec.replicas).toBe(2)
   })
 
-  it('wählt seine Pods über dasselbe Label, das das Template setzt', () => {
+  it('selects its Pods by the same label the template sets', () => {
     const selector = deployment.spec.selector.matchLabels
     expect(selector).toEqual({ 'app.kubernetes.io/name': 'shop-api' })
     expect(deployment.spec.template.metadata.labels).toMatchObject(selector)
   })
 
-  it('startet das lokal geladene Image ohne Pull', () => {
+  it('starts the locally loaded image without a pull', () => {
     expect(api.image).toBe('shop-api:1.0.0')
     expect(api.imagePullPolicy).toBe('IfNotPresent')
   })
 
-  it('benennt den Port des Containers', () => {
+  it('names the container port', () => {
     expect(api.ports).toEqual([{ name: 'http', containerPort: 3000 }])
   })
 
-  it('erreicht Postgres über den Service-Namen', () => {
+  it('reaches Postgres by the Service name', () => {
     expect(JSON.stringify(api.env)).toContain('@postgres:5432/shop')
   })
 })

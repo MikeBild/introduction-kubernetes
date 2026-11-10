@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Was passiert im Cluster? Ressourcen, Events, Logs und der Grund für einen Neustart.
-# Voraussetzung: Der Stack aus Übung 08 läuft im Namespace werkstatt.
+# What is happening in the cluster? Resources, events, logs and the reason for a restart.
+# Prerequisite: the stack from exercise 08 is running in the namespace werkstatt.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -8,11 +8,11 @@ kubectl apply -k metrics-server
 kubectl -n kube-system rollout status deployment/metrics-server
 until kubectl top pods -n werkstatt >/dev/null 2>&1; do sleep 5; done
 
-# TODO 3: Zeig kubectl top für Nodes und für die Pods in werkstatt, sortiert nach Speicher.
+# TODO 3: Show kubectl top for nodes and for the Pods in werkstatt, sorted by memory.
 
-# TODO 4: Zeig die letzten zehn Events im Namespace (kubectl events).
+# TODO 4: Show the last ten events in the namespace (kubectl events).
 
-# TODO 5: Zeig die Logs aller API-Pods über das Label, mit --prefix.
+# TODO 5: Show the logs of all API Pods via the label, with --prefix.
 
-# TODO 6: Schick PID 1 eines API-Pods ein SIGTERM, warte auf restartCount 1
-#         und zeig mit describe den Last State und mit logs --previous die alten Logs.
+# TODO 6: Send SIGTERM to PID 1 of an API Pod, wait for restartCount 1
+#         and show the Last State with describe and the old logs with logs --previous.

@@ -9,12 +9,12 @@ export const createApp = ({ store, version, isShuttingDown }: AppDeps) => {
   const app = express()
   app.use(express.json({ limit: '100kb' }))
 
-  // Liveness: lebt der Prozess? Keine Dependencies prüfen.
+  // Liveness: is the process alive? Do not check dependencies.
   app.get('/livez', (req, res) => {
     res.json({ status: 'ok' })
   })
 
-  // Readiness: soll diese Instanz Traffic bekommen? Datenbank und Shutdown-Status.
+  // Readiness: should this instance receive traffic? Database and shutdown status.
   app.get('/readyz', async (req, res) => {
     const ready = !isShuttingDown() && (await store.ping().then(() => true, () => false))
     res.status(ready ? 200 : 503).json({ status: ready ? 'ready' : 'not ready' })
@@ -48,7 +48,7 @@ export const createApp = ({ store, version, isShuttingDown }: AppDeps) => {
     res.status(201).json({ ...result.order, totalCents: totalCents(result.order.items) })
   })
 
-  // Express 5 leitet Fehler aus async Handlern selbst hierher weiter.
+  // Express 5 forwards errors from async handlers here on its own.
   app.use((err: unknown, req: express.Request, res: express.Response, next: express.NextFunction) => {
     log('error', 'request failed', { path: req.path, error: err instanceof Error ? err.message : String(err) })
     res.status(500).json({ message: 'internal error' })

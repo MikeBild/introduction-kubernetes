@@ -1,38 +1,40 @@
-# 08 · Die Gateway API löst Ingress ab
+*English · [Deutsch](README.de.md)*
 
-Lektion `k8s-gateway-api`. Du installierst Envoy Gateway und machst die API unter `/api` von außen erreichbar – mit GatewayClass, Gateway und HTTPRoute.
+# 08 · The Gateway API replaces Ingress
 
-## Warum Gateway API statt Ingress?
+Lesson `k8s-gateway-api`. You install Envoy Gateway and make the API reachable from outside under `/api` – with GatewayClass, Gateway and HTTPRoute.
 
-- Die Ingress-API ist eingefroren: Sie bekommt keine neuen Features mehr.
-- Ingress NGINX, der verbreitetste Ingress Controller, ist seit März 2026 eingestellt und bekommt keine Sicherheits-Updates mehr.
-- Die Gateway API (`gateway.networking.k8s.io/v1`, aktuell v1.6) trennt Rollen: Das Plattform-Team wählt die GatewayClass, der Cluster-Betrieb das Gateway, das App-Team schreibt nur HTTPRoutes. Header, Gewichte und Rewrites stehen in der Spezifikation statt in herstellerspezifischen Annotations.
+## Why Gateway API instead of Ingress?
 
-Envoy Gateway gehört zum Envoy-Projekt der CNCF, implementiert die Gateway API konform und lässt sich mit einem Manifest installieren.
+- The Ingress API is frozen: it gets no new features.
+- Ingress NGINX, the most widespread Ingress controller, has been retired since March 2026 and no longer receives security updates.
+- The Gateway API (`gateway.networking.k8s.io/v1`, currently v1.6) separates roles: the platform team chooses the GatewayClass, cluster operations the Gateway, the app team only writes HTTPRoutes. Headers, weights and rewrites are part of the specification instead of vendor-specific annotations.
 
-## Aufgabe
+Envoy Gateway belongs to the Envoy project of the CNCF, implements the Gateway API conformantly and installs with a single manifest.
 
-1. Ergänze [`start/gateway.yaml`](start/gateway.yaml):
-   - GatewayClass `envoy` mit `controllerName: gateway.envoyproxy.io/gatewayclass-controller`
-   - Gateway `werkstatt` mit einem Listener `http` auf Port 80, nur für Routen aus dem eigenen Namespace
-   - HTTPRoute `shop-api`: `PathPrefix /api` auf den Service `shop-api`, Port 80, mit `URLRewrite` `ReplacePrefixMatch: /`
-2. Führ [`start/gateway.sh`](start/gateway.sh) aus. Es installiert Envoy Gateway v1.9.3, wendet alles an und testet per `port-forward`.
+## Task
+
+1. Complete [`start/gateway.yaml`](start/gateway.yaml):
+   - GatewayClass `envoy` with `controllerName: gateway.envoyproxy.io/gatewayclass-controller`
+   - Gateway `werkstatt` with one listener `http` on port 80, only for routes from its own namespace
+   - HTTPRoute `shop-api`: `PathPrefix /api` to the Service `shop-api`, port 80, with `URLRewrite` `ReplacePrefixMatch: /`
+2. Run [`start/gateway.sh`](start/gateway.sh). It installs Envoy Gateway v1.9.3, applies everything and tests via `port-forward`.
 
 ```bash
 cd exercises/08-k8s-gateway-api/start
 bash gateway.sh
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- `curl localhost:8080/api/products` liefert drei Produkte.
-- `curl localhost:8080/admin` liefert 404: Es gibt keine Route.
-- `kubectl -n werkstatt get gateway` zeigt `PROGRAMMED False` mit dem Grund `AddressNotAssigned`.
+- `curl localhost:8080/api/products` returns three products.
+- `curl localhost:8080/admin` returns 404: there is no route.
+- `kubectl -n werkstatt get gateway` shows `PROGRAMMED False` with the reason `AddressNotAssigned`.
 
-Der letzte Punkt ist lokal erwartet: Envoy Gateway legt je Gateway einen Service vom Typ `LoadBalancer` an. In der Cloud vergibt der Provider die Adresse, in kind tut das niemand. Deshalb testest du per `port-forward`. Willst du lokal eine echte Adresse, starte [cloud-provider-kind](https://github.com/kubernetes-sigs/cloud-provider-kind).
+The last point is expected locally: Envoy Gateway creates a Service of type `LoadBalancer` per Gateway. In the cloud the provider assigns the address, in kind nobody does. That is why you test via `port-forward`. If you want a real address locally, start [cloud-provider-kind](https://github.com/kubernetes-sigs/cloud-provider-kind).
 
-Entferne in `start/test/gateway.test.ts` das `.skip` und führe `npx vitest exercises/08-k8s-gateway-api/start` aus.
+Remove the `.skip` in `start/test/gateway.test.ts` and run `npx vitest exercises/08-k8s-gateway-api/start`.
 
-## Lösung
+## Reference solution
 
 [`solution/gateway.yaml`](solution/gateway.yaml)

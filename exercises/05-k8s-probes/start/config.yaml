@@ -1,5 +1,5 @@
-# Konfiguration gehört nicht ins Image: Werte in die ConfigMap, Geheimnisse ins Secret.
-# Das Secret shop-db liegt schon in postgres.yaml – die API liest daraus nur das Passwort.
+# Configuration does not belong in the image: values go into the ConfigMap, secrets into the Secret.
+# The Secret shop-db already lives in postgres.yaml – the API reads only the password from it.
 apiVersion: v1
 kind: ConfigMap
 metadata:

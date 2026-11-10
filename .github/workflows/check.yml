@@ -18,7 +18,7 @@ jobs:
       - run: npm run check
 
   kind:
-    # Wendet die Lösungen in einem echten kind-Cluster an – mit Probes, Rollout und Gateway.
+    # Applies the reference solutions in a real kind cluster – with probes, rollout and Gateway.
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

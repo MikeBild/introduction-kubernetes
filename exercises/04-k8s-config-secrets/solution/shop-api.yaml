@@ -1,4 +1,4 @@
-# Die API bekommt ihre Konfiguration aus ConfigMap und Secret, nicht aus dem Image.
+# The API gets its configuration from ConfigMap and Secret, not from the image.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,17 +25,17 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          # Alle Schlüssel der ConfigMap als Umgebungsvariablen.
+          # All keys of the ConfigMap as environment variables.
           envFrom:
             - configMapRef:
                 name: shop-api-config
           env:
-            # Nur das Passwort aus dem Secret, nicht das ganze Secret.
+            # Only the password from the Secret, not the whole Secret.
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: shop-db
                   key: POSTGRES_PASSWORD
-            # $(NAME) setzt Variablen ein, die vorher definiert sind.
+            # $(NAME) substitutes variables that are defined earlier.
             - name: DATABASE_URL
               value: postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)

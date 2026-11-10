@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# Den Service von innen und von außen ansprechen.
+# Reach the Service from inside and from outside.
 set -euo pipefail
 cd "$(dirname "$0")"
 
 kubectl apply -f .
 kubectl -n werkstatt rollout status deployment/shop-api
 
-# 1. Welche Pods stehen hinter dem Service? Die EndpointSlices zeigen ihre IPs.
+# 1. Which Pods are behind the Service? The EndpointSlices show their IPs.
 kubectl -n werkstatt get service shop-api
 kubectl -n werkstatt get endpointslices -l kubernetes.io/service-name=shop-api
 
-# 2. Von innen: ein Wegwerf-Pod fragt den Service über seinen DNS-Namen.
+# 2. From inside: a throwaway Pod queries the Service by its DNS name.
 kubectl -n werkstatt run curl -q --rm -i --restart=Never --image=curlimages/curl:8.23.0 -- \
   curl -fs http://shop-api/products
 
-# 3. Von außen: port-forward tunnelt einen lokalen Port zum Service.
+# 3. From outside: port-forward tunnels a local port to the Service.
 kubectl -n werkstatt port-forward service/shop-api 8080:80 >/dev/null &
 forward=$!
 trap 'kill $forward' EXIT

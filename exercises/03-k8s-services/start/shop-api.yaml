@@ -1,4 +1,4 @@
-# Du startest Deployments, keine Pods: Das Deployment hält zwei Replicas am Leben.
+# You start Deployments, not Pods: the Deployment keeps two replicas alive.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,6 +26,6 @@ spec:
             - name: http
               containerPort: 3000
           env:
-            # Vorläufig im Klartext – die Lektion zu ConfigMaps und Secrets räumt das auf.
+            # Plain text for now – the lesson on ConfigMaps and Secrets cleans this up.
             - name: DATABASE_URL
               value: postgres://postgres:werkstatt@postgres:5432/shop

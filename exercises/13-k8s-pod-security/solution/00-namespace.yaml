@@ -1,5 +1,5 @@
 # Angepasst: Pod Security Admission setzt im Namespace das Profil restricted durch.
-# Pods, die dagegen verstoßen, lehnt der API-Server schon beim Anlegen ab.
+# Pods that violate it are rejected by the API server already on creation.
 apiVersion: v1
 kind: Namespace
 metadata:

@@ -1,4 +1,4 @@
-// Konfiguration kommt aus der Umgebung. Ohne gültige Config kein Start.
+// Configuration comes from the environment. No start without a valid config.
 export type Config = { port: number; databaseUrl: string; version: string }
 
 export const readConfig = (env: NodeJS.ProcessEnv = process.env): Config => {

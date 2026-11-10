@@ -1,5 +1,5 @@
-# Postgres 18 für den Werkstatt-Shop – gegeben, damit du dich auf die API konzentrierst.
-# StatefulSet mit eigenem Volume je Pod, Headless Service für einen festen DNS-Namen.
+# Postgres 18 for the workshop shop – given, so you can focus on the API.
+# StatefulSet with its own volume per Pod, headless Service for a stable DNS name.
 apiVersion: v1
 kind: Secret
 metadata:

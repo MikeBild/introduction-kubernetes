@@ -1,4 +1,4 @@
-# dev: eine Replica, die neueste Version, eigener Namespace.
+# dev: one replica, the latest version, its own namespace.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: werkstatt-dev

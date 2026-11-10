@@ -1,4 +1,4 @@
-# prod: drei Replicas, die freigegebene Version, mehr Speicher für Postgres.
+# prod: three replicas, the approved version, more memory for Postgres.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: werkstatt-prod

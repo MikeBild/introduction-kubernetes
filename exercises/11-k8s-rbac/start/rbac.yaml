@@ -1,8 +1,8 @@
-# Jede Identität bekommt genau die Rechte, die sie braucht – und nur in ihrem Namespace.
-# TODO 1: ServiceAccount shop-api ohne Token (automountServiceAccountToken: false).
-# TODO 2: ServiceAccount deployer und eine Role deployer: Deployments lesen und patchen,
-#         ReplicaSets, Pods und pods/log nur lesen. Keine Secrets.
-# TODO 3: RoleBinding deployer verbindet Role und ServiceAccount.
+# Each identity gets exactly the permissions it needs – and only in its namespace.
+# TODO 1: ServiceAccount shop-api without a token (automountServiceAccountToken: false).
+# TODO 2: ServiceAccount deployer and a Role deployer: read and patch Deployments,
+#         read-only on ReplicaSets, Pods and pods/log. No Secrets.
+# TODO 3: RoleBinding deployer connects Role and ServiceAccount.
 apiVersion: v1
 kind: ServiceAccount
 metadata:

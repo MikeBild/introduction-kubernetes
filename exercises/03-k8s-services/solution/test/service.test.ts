@@ -8,20 +8,20 @@ const deployment = lazy(() => find(objects, 'Deployment', 'shop-api'))
 const tryIt = script(dir, 'try.sh')
 
 describe('03 Services', () => {
-  it('ist ein ClusterIP-Service im Namespace werkstatt', () => {
+  it('is a ClusterIP Service in the namespace werkstatt', () => {
     expect(service.metadata.namespace).toBe('werkstatt')
     expect(service.spec.type ?? 'ClusterIP').toBe('ClusterIP')
   })
 
-  it('wählt genau die Pods des Deployments', () => {
+  it('selects exactly the Pods of the Deployment', () => {
     expect(deployment.spec.template.metadata.labels).toMatchObject(service.spec.selector)
   })
 
-  it('bildet Port 80 auf den benannten Port http ab', () => {
+  it('maps port 80 to the named port http', () => {
     expect(service.spec.ports).toEqual([{ name: 'http', port: 80, targetPort: 'http' }])
   })
 
-  it('testet von innen per DNS-Namen und von außen per port-forward', () => {
+  it('tests from inside by DNS name and from outside by port-forward', () => {
     expect(tryIt).toMatch(/kubectl -n werkstatt run curl .*curlimages\/curl:[\d.]+ .*http:\/\/shop-api\//)
     expect(tryIt).toMatch(/port-forward service\/shop-api 8080:80/)
   })

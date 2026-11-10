@@ -1,4 +1,4 @@
-# Die API läuft mit eigenem ServiceAccount und ohne Token für die Kubernetes API.
+# The API runs with its own ServiceAccount and without a token for the Kubernetes API.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/part-of: werkstatt-shop
 spec:
   replicas: 3
-  # Ein neuer Pod muss fünf Sekunden bereit sein, bevor der nächste dran ist.
+  # A new Pod must be ready for five seconds before the next one follows.
   minReadySeconds: 5
   revisionHistoryLimit: 5
   strategy:
@@ -36,52 +36,52 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          # Startup: Erst wenn diese Probe einmal klappt, beginnen Liveness und Readiness.
+          # Startup: liveness and readiness start only after this probe has succeeded once.
           startupProbe:
             httpGet:
               path: /livez
               port: http
             periodSeconds: 2
             failureThreshold: 15
-          # Liveness: Hängt der Prozess? Dann startet das Kubelet den Container neu.
+          # Liveness: is the process stuck? Then the kubelet restarts the container.
           livenessProbe:
             httpGet:
               path: /livez
               port: http
             periodSeconds: 10
             failureThreshold: 3
-          # Readiness: Soll der Pod Traffic bekommen? Sonst nimmt ihn der Service heraus.
+          # Readiness: should the Pod receive traffic? Otherwise the Service removes it.
           readinessProbe:
             httpGet:
               path: /readyz
               port: http
             periodSeconds: 5
             failureThreshold: 2
-          # Requests reservieren Platz auf dem Node, Limits ziehen die Grenze.
-          # Kein CPU-Limit: Es bremst nur. Memory-Limit = Request macht den Speicher berechenbar.
-          # Node.js 26 nimmt etwa die Hälfte des Limits als Heap, aber nie unter rund 256 MB.
+          # Requests reserve room on the node, limits draw the line.
+          # No CPU limit: it only throttles. Memory limit = request makes memory predictable.
+          # Node.js 26 takes about half of the limit as heap, but never less than roughly 256 MB.
           resources:
             requests:
               cpu: 100m
               memory: 512Mi
             limits:
               memory: 512Mi
-          # Kurz warten, bis Service und Gateway den Pod aus dem Routing genommen haben.
+          # Wait briefly until Service and Gateway have taken the Pod out of routing.
           lifecycle:
             preStop:
               sleep:
                 seconds: 5
-          # Alle Schlüssel der ConfigMap als Umgebungsvariablen.
+          # All keys of the ConfigMap as environment variables.
           envFrom:
             - configMapRef:
                 name: shop-api-config
           env:
-            # Nur das Passwort aus dem Secret, nicht das ganze Secret.
+            # Only the password from the Secret, not the whole Secret.
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: shop-db
                   key: POSTGRES_PASSWORD
-            # $(NAME) setzt Variablen ein, die vorher definiert sind.
+            # $(NAME) substitutes variables that are defined earlier.
             - name: DATABASE_URL
               value: postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)

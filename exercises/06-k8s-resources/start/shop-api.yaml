@@ -1,6 +1,6 @@
 # TODO 1: requests: cpu 100m, memory 512Mi.
-# TODO 2: limits: memory 512Mi, kein CPU-Limit.
-# Probes sagen Kubernetes, ob der Pod lebt und ob er Traffic bekommen soll.
+# TODO 2: limits: memory 512Mi, no CPU limit.
+# Probes tell Kubernetes whether the Pod is alive and whether it should receive traffic.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,38 +27,38 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          # Startup: Erst wenn diese Probe einmal klappt, beginnen Liveness und Readiness.
+          # Startup: liveness and readiness start only after this probe has succeeded once.
           startupProbe:
             httpGet:
               path: /livez
               port: http
             periodSeconds: 2
             failureThreshold: 15
-          # Liveness: Hängt der Prozess? Dann startet das Kubelet den Container neu.
+          # Liveness: is the process stuck? Then the kubelet restarts the container.
           livenessProbe:
             httpGet:
               path: /livez
               port: http
             periodSeconds: 10
             failureThreshold: 3
-          # Readiness: Soll der Pod Traffic bekommen? Sonst nimmt ihn der Service heraus.
+          # Readiness: should the Pod receive traffic? Otherwise the Service removes it.
           readinessProbe:
             httpGet:
               path: /readyz
               port: http
             periodSeconds: 5
             failureThreshold: 2
-          # Alle Schlüssel der ConfigMap als Umgebungsvariablen.
+          # All keys of the ConfigMap as environment variables.
           envFrom:
             - configMapRef:
                 name: shop-api-config
           env:
-            # Nur das Passwort aus dem Secret, nicht das ganze Secret.
+            # Only the password from the Secret, not the whole Secret.
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: shop-db
                   key: POSTGRES_PASSWORD
-            # $(NAME) setzt Variablen ein, die vorher definiert sind.
+            # $(NAME) substitutes variables that are defined earlier.
             - name: DATABASE_URL
               value: postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)

@@ -1,7 +1,7 @@
-# TODO 1: startupProbe per httpGet auf /livez, alle 2 Sekunden, bis zu 15 Versuche.
-# TODO 2: livenessProbe per httpGet auf /livez – ohne Datenbank.
-# TODO 3: readinessProbe per httpGet auf /readyz – mit Datenbank.
-# Die API bekommt ihre Konfiguration aus ConfigMap und Secret, nicht aus dem Image.
+# TODO 1: startupProbe via httpGet on /livez, every 2 seconds, up to 15 attempts.
+# TODO 2: livenessProbe via httpGet on /livez – without the database.
+# TODO 3: readinessProbe via httpGet on /readyz – with the database.
+# The API gets its configuration from ConfigMap and Secret, not from the image.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,17 +28,17 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          # Alle Schlüssel der ConfigMap als Umgebungsvariablen.
+          # All keys of the ConfigMap as environment variables.
           envFrom:
             - configMapRef:
                 name: shop-api-config
           env:
-            # Nur das Passwort aus dem Secret, nicht das ganze Secret.
+            # Only the password from the Secret, not the whole Secret.
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: shop-db
                   key: POSTGRES_PASSWORD
-            # $(NAME) setzt Variablen ein, die vorher definiert sind.
+            # $(NAME) substitutes variables that are defined earlier.
             - name: DATABASE_URL
               value: postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)

@@ -1,7 +1,7 @@
-# Ab Werk darf jeder Pod jeden Pod erreichen. Diese Policies drehen das um.
-# TODO 1: default-deny-ingress: leerer podSelector, policyTypes [Ingress], keine Regeln.
-# TODO 2: allow-gateway-to-api: Pods shop-api nehmen nur aus dem Namespace envoy-gateway-system an, Port http.
-# TODO 3: allow-api-to-postgres: Pods postgres nehmen nur von Pods shop-api an, Port 5432.
+# By default every Pod can reach every Pod. These policies turn that around.
+# TODO 1: default-deny-ingress: empty podSelector, policyTypes [Ingress], no rules.
+# TODO 2: allow-gateway-to-api: Pods shop-api accept only from the namespace envoy-gateway-system, port http.
+# TODO 3: allow-api-to-postgres: Pods postgres accept only from Pods shop-api, port 5432.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:

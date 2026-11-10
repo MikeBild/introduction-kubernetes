@@ -1,5 +1,5 @@
-# Ein Service gibt den Pods einen festen Namen und eine feste Adresse im Cluster.
-# Er wählt die Pods über Labels, nicht über Namen oder IPs.
+# A Service gives the Pods a stable name and a stable address in the cluster.
+# It selects the Pods by labels, not by names or IPs.
 apiVersion: v1
 kind: Service
 metadata:

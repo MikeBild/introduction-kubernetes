@@ -3,22 +3,22 @@ import { container, find, lazy, manifests } from '../../../../scripts/lib/manife
 
 const api = lazy(() => container(find(manifests(`${import.meta.dirname}/..`), 'Deployment', 'shop-api')))
 
-// Entferne .skip, wenn du mit der Übung beginnst.
+// Remove .skip when you start the exercise.
 describe.skip('05 Probes', () => {
-  it('wartet mit einer Startup Probe, bis der Prozess antwortet', () => {
+  it('waits with a startup probe until the process responds', () => {
     expect(api.startupProbe.httpGet).toEqual({ path: '/livez', port: 'http' })
     expect(api.startupProbe.periodSeconds * api.startupProbe.failureThreshold).toBeGreaterThanOrEqual(30)
   })
 
-  it('prüft Liveness ohne Abhängigkeiten über /livez', () => {
+  it('checks liveness without dependencies via /livez', () => {
     expect(api.livenessProbe.httpGet).toEqual({ path: '/livez', port: 'http' })
   })
 
-  it('prüft Readiness mit Datenbank über /readyz', () => {
+  it('checks readiness with the database via /readyz', () => {
     expect(api.readinessProbe.httpGet).toEqual({ path: '/readyz', port: 'http' })
   })
 
-  it('meldet Readiness öfter als Liveness', () => {
+  it('reports readiness more often than liveness', () => {
     expect(api.readinessProbe.periodSeconds).toBeLessThan(api.livenessProbe.periodSeconds)
   })
 })

@@ -3,12 +3,12 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parseAllDocuments } from 'yaml'
 
-// Kleine Helfer für die Tests der Übungen: Manifeste lesen und Objekte finden.
-// Die Typen bleiben bewusst locker, die Tests prüfen Felder einzeln.
+// Small helpers for the exercise tests: read manifests and find objects.
+// The types stay loose on purpose, the tests check fields one by one.
 export type K8sObject = { apiVersion: string; kind: string; metadata: { name: string; namespace?: string; labels?: Record<string, string> }; [key: string]: any }
 
-// Wertet erst beim ersten Zugriff aus. So bricht ein Startpunkt mit unfertigen Manifesten
-// nicht schon beim Laden der Tests ab, solange die Tests auf describe.skip stehen.
+// Evaluates on first access only. That way a starting point with unfinished manifests
+// does not fail while the tests load, as long as the tests are on describe.skip.
 export const lazy = <T extends object>(load: () => T): T => {
   let value: T | undefined
   const get = () => (value ??= load())
@@ -31,14 +31,14 @@ export const parse = (text: string): K8sObject[] =>
     .map((doc) => doc.toJS() as K8sObject | null)
     .filter((obj): obj is K8sObject => obj !== null)
 
-// Alle Manifeste eines Ordners, so wie kubectl apply -f . sie liest.
+// All manifests of a folder, the way kubectl apply -f . reads them.
 export const manifests = (dir: string): K8sObject[] =>
   readdirSync(dir)
     .filter((file) => /\.ya?ml$/.test(file) && file !== 'kustomization.yaml')
     .sort()
     .flatMap((file) => parse(read(dir, file)))
 
-// Manifeste, wie Kustomize sie für einen Ordner rendert (kubectl kustomize).
+// Manifests as Kustomize renders them for a folder (kubectl kustomize).
 export const kustomize = (dir: string): K8sObject[] =>
   parse(execFileSync('kubectl', ['kustomize', dir], { encoding: 'utf8' }))
 
@@ -54,7 +54,7 @@ export const container = (deployment: K8sObject, name = 'api') => {
   return found
 }
 
-// Shell-Skript ohne Kommentare und mit zusammengezogenen Zeilenfortsetzungen.
+// Shell script without comments and with line continuations joined.
 export const script = (dir: string, file: string): string =>
   read(dir, file)
     .replace(/\\\r?\n/g, ' ')

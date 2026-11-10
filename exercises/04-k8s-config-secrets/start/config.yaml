@@ -1,6 +1,6 @@
-# Konfiguration gehört nicht ins Image: Werte in die ConfigMap, Geheimnisse ins Secret.
-# TODO 1: ConfigMap shop-api-config im Namespace werkstatt.
-# TODO 2: Schlüssel PORT, DB_HOST, DB_NAME und DB_USER – das Passwort gehört nicht hierher.
+# Configuration does not belong in the image: values go into the ConfigMap, secrets into the Secret.
+# TODO 1: ConfigMap shop-api-config in the namespace werkstatt.
+# TODO 2: Keys PORT, DB_HOST, DB_NAME and DB_USER – the password does not belong here.
 apiVersion: v1
 kind: ConfigMap
 metadata:

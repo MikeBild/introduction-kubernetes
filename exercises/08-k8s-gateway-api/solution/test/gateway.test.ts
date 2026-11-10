@@ -7,22 +7,22 @@ const gateway = lazy(() => find(objects, 'Gateway', 'werkstatt'))
 const route = lazy(() => find(objects, 'HTTPRoute', 'shop-api'))
 
 describe('08 Gateway API', () => {
-  it('nutzt die stabile API gateway.networking.k8s.io/v1', () => {
+  it('uses the stable API gateway.networking.k8s.io/v1', () => {
     for (const obj of [gatewayClass, gateway, route]) expect(obj.apiVersion).toBe('gateway.networking.k8s.io/v1')
   })
 
-  it('bindet die GatewayClass an Envoy Gateway', () => {
+  it('binds the GatewayClass to Envoy Gateway', () => {
     expect(gatewayClass.spec.controllerName).toBe('gateway.envoyproxy.io/gatewayclass-controller')
   })
 
-  it('öffnet einen HTTP-Listener auf Port 80 nur für Routen aus dem eigenen Namespace', () => {
+  it('opens an HTTP listener on port 80 only for routes from its own namespace', () => {
     expect(gateway.spec.gatewayClassName).toBe('envoy')
     expect(gateway.spec.listeners).toEqual([
       { name: 'http', protocol: 'HTTP', port: 80, allowedRoutes: { namespaces: { from: 'Same' } } },
     ])
   })
 
-  it('leitet /api an den Service shop-api und entfernt das Präfix', () => {
+  it('routes /api to the Service shop-api and removes the prefix', () => {
     const [rule] = route.spec.rules
     expect(route.spec.parentRefs).toEqual([{ name: 'werkstatt' }])
     expect(rule.matches).toEqual([{ path: { type: 'PathPrefix', value: '/api' } }])
@@ -30,7 +30,7 @@ describe('08 Gateway API', () => {
     expect(rule.backendRefs).toEqual([{ name: 'shop-api', port: 80 }])
   })
 
-  it('kommt ohne Ingress aus', () => {
+  it('does without Ingress', () => {
     expect(objects.some((obj) => obj.kind === 'Ingress')).toBe(false)
   })
 })

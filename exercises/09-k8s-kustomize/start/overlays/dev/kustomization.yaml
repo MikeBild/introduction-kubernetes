@@ -1,4 +1,4 @@
-# dev: eine Replica, die neueste Version, eigener Namespace.
+# dev: one replica, the latest version, its own namespace.
 # TODO 4: namespace werkstatt-dev, resources ../../base, replicas shop-api: 1, images shop-api: newTag 1.1.0.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization

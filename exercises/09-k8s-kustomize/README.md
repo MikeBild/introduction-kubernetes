@@ -1,38 +1,40 @@
-# 09 · Eine Basis, mehrere Umgebungen
+*English · [Deutsch](README.de.md)*
 
-Zusatzkapitel, Lektion `k8s-kustomize`. Du machst aus den Manifesten eine Kustomize-Basis und leitest daraus `dev` und `prod` ab.
+# 09 · One base, multiple environments
 
-## Warum Kustomize statt Helm?
+Extra chapter, lesson `k8s-kustomize`. You turn the manifests into a Kustomize base and derive `dev` and `prod` from it.
 
-- Kustomize steckt in kubectl: `kubectl apply -k` und `kubectl kustomize`, kein Zusatzwerkzeug.
-- Basis und Overlays bleiben reines YAML. Jede Datei lässt sich mit `kubectl apply` lesen und prüfen, ohne Template-Sprache.
-- Für eigene Anwendungen mit wenigen Umgebungen reicht das.
+## Why Kustomize instead of Helm?
 
-Helm v4 brauchst du, um fremde Pakete wie Datenbanken oder Controller als Chart zu installieren und zu aktualisieren. Für deine eigenen Manifeste ist eine Template-Sprache meist mehr, als du brauchst.
+- Kustomize is built into kubectl: `kubectl apply -k` and `kubectl kustomize`, no extra tool.
+- Base and overlays stay plain YAML. Every file can be read and checked with `kubectl apply`, without a template language.
+- For your own applications with a few environments, that is enough.
 
-## Aufgabe
+You need Helm v4 to install and update third-party packages such as databases or controllers as a chart. For your own manifests, a template language is usually more than you need.
 
-1. Ergänze [`start/base/kustomization.yaml`](start/base/kustomization.yaml): `namespace: werkstatt`, ein Label `app.kubernetes.io/part-of: werkstatt-shop` für alle Objekte, und ersetz `config.yaml` durch einen `configMapGenerator` mit denselben Werten. Lösch `config.yaml` danach.
-2. Ergänze [`start/overlays/dev/kustomization.yaml`](start/overlays/dev/kustomization.yaml): Namespace `werkstatt-dev`, eine Replica, Image-Tag `1.1.0`.
-3. Ergänze [`start/overlays/prod/kustomization.yaml`](start/overlays/prod/kustomization.yaml): Namespace `werkstatt-prod`, drei Replicas, Image-Tag `1.0.0` und ein JSON-Patch, der das Memory-Limit von Postgres auf `1Gi` setzt.
+## Task
+
+1. Complete [`start/base/kustomization.yaml`](start/base/kustomization.yaml): `namespace: werkstatt`, a label `app.kubernetes.io/part-of: werkstatt-shop` for all objects, and replace `config.yaml` with a `configMapGenerator` holding the same values. Delete `config.yaml` afterwards.
+2. Complete [`start/overlays/dev/kustomization.yaml`](start/overlays/dev/kustomization.yaml): namespace `werkstatt-dev`, one replica, image tag `1.1.0`.
+3. Complete [`start/overlays/prod/kustomization.yaml`](start/overlays/prod/kustomization.yaml): namespace `werkstatt-prod`, three replicas, image tag `1.0.0` and a JSON patch that sets the memory limit of Postgres to `1Gi`.
 
 ```bash
 cd exercises/09-k8s-kustomize/start
-kubectl kustomize overlays/dev            # rendern und lesen
+kubectl kustomize overlays/dev            # render and read
 kubectl apply -k overlays/dev
 kubectl apply -k overlays/prod
-kubectl diff -k overlays/prod             # was würde sich ändern?
+kubectl diff -k overlays/prod             # what would change?
 kubectl delete -k overlays/dev && kubectl delete -k overlays/prod
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- `kubectl -n werkstatt-dev get deployment shop-api` zeigt `1/1`, in `werkstatt-prod` `3/3`.
-- Der Name der ConfigMap endet auf einen Hash, etwa `shop-api-config-b96ghbmtkk`, und das Deployment verweist darauf.
-- Änderst du einen Wert im Generator, ändert sich der Hash – und das Deployment rollt neu aus.
+- `kubectl -n werkstatt-dev get deployment shop-api` shows `1/1`, in `werkstatt-prod` `3/3`.
+- The name of the ConfigMap ends in a hash, such as `shop-api-config-b96ghbmtkk`, and the Deployment references it.
+- If you change a value in the generator, the hash changes – and the Deployment rolls out again.
 
-Entferne in `start/test/kustomize.test.ts` das `.skip` und führe `npx vitest exercises/09-k8s-kustomize/start` aus. Der Test rendert die Overlays mit `kubectl kustomize`.
+Remove the `.skip` in `start/test/kustomize.test.ts` and run `npx vitest exercises/09-k8s-kustomize/start`. The test renders the overlays with `kubectl kustomize`.
 
-## Lösung
+## Reference solution
 
-[`solution/base/kustomization.yaml`](solution/base/kustomization.yaml), [`solution/overlays/dev/kustomization.yaml`](solution/overlays/dev/kustomization.yaml) und [`solution/overlays/prod/kustomization.yaml`](solution/overlays/prod/kustomization.yaml)
+[`solution/base/kustomization.yaml`](solution/base/kustomization.yaml), [`solution/overlays/dev/kustomization.yaml`](solution/overlays/dev/kustomization.yaml) and [`solution/overlays/prod/kustomization.yaml`](solution/overlays/prod/kustomization.yaml)

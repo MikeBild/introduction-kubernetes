@@ -7,16 +7,16 @@ const pod = lazy(() => find(objects, 'Deployment', 'shop-api').spec.template.spe
 const api = lazy(() => container(find(objects, 'Deployment', 'shop-api')))
 const postgres = lazy(() => find(objects, 'StatefulSet', 'postgres').spec.template.spec)
 
-// Entferne .skip, wenn du mit der Übung beginnst.
+// Remove .skip when you start the exercise.
 describe.skip('13 Pod Security', () => {
-  it('setzt im Namespace das Profil restricted durch', () => {
+  it('enforces the restricted profile in the namespace', () => {
     expect(namespace.metadata.labels).toMatchObject({
       'pod-security.kubernetes.io/enforce': 'restricted',
       'pod-security.kubernetes.io/warn': 'restricted',
     })
   })
 
-  it('startet die API als nonroot mit Seccomp und ohne Token', () => {
+  it('starts the API as nonroot with seccomp and without a token', () => {
     expect(pod.securityContext).toEqual({
       runAsNonRoot: true,
       runAsUser: 65532,
@@ -26,7 +26,7 @@ describe.skip('13 Pod Security', () => {
     expect(pod.automountServiceAccountToken).toBe(false)
   })
 
-  it('nimmt dem Container alle Capabilities und das Schreibrecht', () => {
+  it('takes all capabilities and write access away from the container', () => {
     expect(api.securityContext).toEqual({
       allowPrivilegeEscalation: false,
       readOnlyRootFilesystem: true,
@@ -34,7 +34,7 @@ describe.skip('13 Pod Security', () => {
     })
   })
 
-  it('lässt auch Postgres als nonroot laufen', () => {
+  it('runs Postgres as nonroot too', () => {
     expect(postgres.securityContext).toMatchObject({ runAsNonRoot: true, runAsUser: 999, fsGroup: 999 })
     expect(postgres.containers[0].securityContext.capabilities).toEqual({ drop: ['ALL'] })
   })

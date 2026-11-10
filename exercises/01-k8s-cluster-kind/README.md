@@ -1,38 +1,40 @@
-# 01 · Kubernetes gleicht Soll und Ist ab
+*English · [Deutsch](README.de.md)*
 
-Lektion `k8s-cluster-kind`. Du legst mit kind einen lokalen Cluster mit drei Nodes an und lädst das Image der Werkstatt-Shop-API hinein.
+# 01 · Kubernetes reconciles desired and actual state
 
-## Warum kind?
+Lesson `k8s-cluster-kind`. You create a local cluster with three nodes using kind and load the image of the workshop shop API into it.
 
-- kind startet Upstream-Kubernetes per kubeadm, so wie viele Cloud-Cluster es auch tun.
-- Ein Cluster mit mehreren Nodes ist eine Config-Datei, kein Zusatzwerkzeug.
-- `kind load docker-image` bringt lokale Images ohne Registry auf alle Nodes.
-- kind ist ein Projekt der Kubernetes SIG Testing und läuft in der CI von Kubernetes selbst.
+## Why kind?
 
-k3d startet k3s und bringt Traefik, einen Load Balancer und weitere Extras mit. Das ist bequem, verdeckt aber genau die Konzepte, die du hier lernst.
+- kind starts upstream Kubernetes via kubeadm, just like many cloud clusters do.
+- A cluster with several nodes is one config file, not an extra tool.
+- `kind load docker-image` puts local images on all nodes without a registry.
+- kind is a project of the Kubernetes SIG Testing and runs in the CI of Kubernetes itself.
 
-## Aufgabe
+k3d starts k3s and brings Traefik, a load balancer and further extras. That is convenient, but hides exactly the concepts you learn here.
 
-1. Ergänze in [`start/kind-config.yaml`](start/kind-config.yaml) zwei Worker Nodes und leg das Node-Image mit Digest fest:
+## Task
+
+1. In [`start/kind-config.yaml`](start/kind-config.yaml), add two worker nodes and pin the node image with its digest:
    `kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5`
-2. Ergänze [`start/setup.sh`](start/setup.sh): Cluster anlegen, Nodes zeigen, `shop-api:1.0.0` und `shop-api:1.1.0` bauen, beide mit `kind load docker-image` laden.
+2. Complete [`start/setup.sh`](start/setup.sh): create the cluster, show the nodes, build `shop-api:1.0.0` and `shop-api:1.1.0`, load both with `kind load docker-image`.
 
 ```bash
-brew install kind            # oder: https://kind.sigs.k8s.io/docs/user/quick-start/
+brew install kind            # or: https://kind.sigs.k8s.io/docs/user/quick-start/
 cd exercises/01-k8s-cluster-kind/start
 bash setup.sh
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- `kubectl get nodes` zeigt `werkstatt-control-plane`, `werkstatt-worker` und `werkstatt-worker2` mit Status `Ready` und Version `v1.37.0`.
-- `docker exec werkstatt-worker crictl images | grep shop-api` zeigt beide Tags.
-- `kubectl get pods -n kube-system` zeigt API-Server, etcd, Scheduler und Controller Manager.
+- `kubectl get nodes` shows `werkstatt-control-plane`, `werkstatt-worker` and `werkstatt-worker2` with status `Ready` and version `v1.37.0`.
+- `docker exec werkstatt-worker crictl images | grep shop-api` shows both tags.
+- `kubectl get pods -n kube-system` shows the API server, etcd, the scheduler and the controller manager.
 
-Aufräumen am Ende des Workshops: `kind delete cluster --name werkstatt`.
+Cleanup at the end of the workshop: `kind delete cluster --name werkstatt`.
 
-Entferne in `start/test/cluster.test.ts` das `.skip` und führe `npx vitest exercises/01-k8s-cluster-kind/start` aus.
+Remove the `.skip` in `start/test/cluster.test.ts` and run `npx vitest exercises/01-k8s-cluster-kind/start`.
 
-## Lösung
+## Reference solution
 
-[`solution/kind-config.yaml`](solution/kind-config.yaml) und [`solution/setup.sh`](solution/setup.sh)
+[`solution/kind-config.yaml`](solution/kind-config.yaml) and [`solution/setup.sh`](solution/setup.sh)

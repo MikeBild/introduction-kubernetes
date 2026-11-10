@@ -5,20 +5,20 @@ const api = lazy(() => container(find(manifests(`${import.meta.dirname}/..`), 'D
 const requests = lazy(() => api.resources.requests)
 const limits = lazy(() => api.resources.limits)
 
-describe('06 Ressourcen', () => {
-  it('reserviert CPU und Speicher per Request', () => {
+describe('06 Resources', () => {
+  it('reserves CPU and memory via requests', () => {
     expect(requests).toEqual({ cpu: '100m', memory: '512Mi' })
   })
 
-  it('begrenzt den Speicher auf den Request', () => {
+  it('limits memory to the request', () => {
     expect(limits.memory).toBe(requests.memory)
   })
 
-  it('setzt kein CPU-Limit', () => {
+  it('sets no CPU limit', () => {
     expect(limits.cpu).toBeUndefined()
   })
 
-  it('lässt dem Heap von Node.js genug Luft (mindestens 512Mi)', () => {
+  it('leaves the Node.js heap enough room (at least 512Mi)', () => {
     expect(Number.parseInt(limits.memory)).toBeGreaterThanOrEqual(512)
   })
 })

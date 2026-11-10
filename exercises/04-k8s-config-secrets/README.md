@@ -1,14 +1,16 @@
-# 04 · Konfiguration gehört nicht ins Image
+*English · [Deutsch](README.de.md)*
 
-Lektion `k8s-config-secrets`. Du ziehst die Konfiguration der API in eine ConfigMap und holst das Passwort aus dem Secret `shop-db`.
+# 04 · Configuration does not belong in the image
 
-## Aufgabe
+Lesson `k8s-config-secrets`. You move the configuration of the API into a ConfigMap and take the password from the Secret `shop-db`.
 
-1. Ergänze [`start/config.yaml`](start/config.yaml): ConfigMap `shop-api-config` mit `PORT`, `DB_HOST`, `DB_NAME` und `DB_USER`. Das Passwort gehört nicht hinein.
-2. Ändere [`start/shop-api.yaml`](start/shop-api.yaml):
-   - `envFrom` liest die ConfigMap komplett ein.
-   - `DB_PASSWORD` kommt per `secretKeyRef` aus dem Secret `shop-db`, Key `POSTGRES_PASSWORD`.
-   - `DATABASE_URL` setzt du mit `$(DB_USER)`, `$(DB_PASSWORD)`, `$(DB_HOST)` und `$(DB_NAME)` zusammen.
+## Task
+
+1. Complete [`start/config.yaml`](start/config.yaml): ConfigMap `shop-api-config` with `PORT`, `DB_HOST`, `DB_NAME` and `DB_USER`. The password does not belong in it.
+2. Change [`start/shop-api.yaml`](start/shop-api.yaml):
+   - `envFrom` reads the whole ConfigMap.
+   - `DB_PASSWORD` comes from the Secret `shop-db`, key `POSTGRES_PASSWORD`, via `secretKeyRef`.
+   - You assemble `DATABASE_URL` from `$(DB_USER)`, `$(DB_PASSWORD)`, `$(DB_HOST)` and `$(DB_NAME)`.
 
 ```bash
 cd exercises/04-k8s-config-secrets/start
@@ -17,18 +19,18 @@ kubectl -n werkstatt rollout status deployment/shop-api
 kubectl -n werkstatt get secret shop-db -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- Im Manifest der API steht kein Passwort mehr.
-- `kubectl -n werkstatt exec deployment/shop-api -- /nodejs/bin/node -e "console.log(process.env.DATABASE_URL)"` zeigt die zusammengesetzte URL.
-- Die Pods werden `Ready`, die API erreicht also Postgres.
+- The manifest of the API no longer contains a password.
+- `kubectl -n werkstatt exec deployment/shop-api -- /nodejs/bin/node -e "console.log(process.env.DATABASE_URL)"` shows the assembled URL.
+- The Pods become `Ready`, so the API reaches Postgres.
 
-Ein Secret ist nur Base64-kodiert, nicht verschlüsselt. Schütz es mit RBAC (Role-Based Access Control), aktiviere Encryption at Rest im Cluster und leg echte Secrets nie im Klartext ins Git-Repo – nutz dafür etwa External Secrets oder Sealed Secrets.
+A Secret is only Base64-encoded, not encrypted. Protect it with RBAC (Role-Based Access Control), enable Encryption at Rest in the cluster and never put real secrets in plain text into the Git repository – use External Secrets or Sealed Secrets, for example.
 
-Ändert sich eine ConfigMap, die per `envFrom` eingelesen wird, merken laufende Pods das nicht. Starte sie mit `kubectl -n werkstatt rollout restart deployment/shop-api` neu. Kustomize löst das mit einem Hash im Namen, siehe Übung 09.
+If a ConfigMap that is read via `envFrom` changes, running Pods do not notice. Restart them with `kubectl -n werkstatt rollout restart deployment/shop-api`. Kustomize solves this with a hash in the name, see exercise 09.
 
-Entferne in `start/test/config.test.ts` das `.skip` und führe `npx vitest exercises/04-k8s-config-secrets/start` aus.
+Remove the `.skip` in `start/test/config.test.ts` and run `npx vitest exercises/04-k8s-config-secrets/start`.
 
-## Lösung
+## Reference solution
 
-[`solution/config.yaml`](solution/config.yaml) und [`solution/shop-api.yaml`](solution/shop-api.yaml)
+[`solution/config.yaml`](solution/config.yaml) and [`solution/shop-api.yaml`](solution/shop-api.yaml)

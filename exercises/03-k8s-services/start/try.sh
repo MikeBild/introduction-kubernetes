@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Den Service von innen und von außen ansprechen.
+# Reach the Service from inside and from outside.
 set -euo pipefail
 cd "$(dirname "$0")"
 
 kubectl apply -f .
 kubectl -n werkstatt rollout status deployment/shop-api
 
-# TODO 3: Zeig den Service und seine EndpointSlices (-l kubernetes.io/service-name=shop-api).
+# TODO 3: Show the Service and its EndpointSlices (-l kubernetes.io/service-name=shop-api).
 
-# TODO 4: Frag aus einem Wegwerf-Pod (curlimages/curl:8.23.0, --rm -i --restart=Never) http://shop-api/products ab.
+# TODO 4: Query http://shop-api/products from a throwaway Pod (curlimages/curl:8.23.0, --rm -i --restart=Never).
 
-# TODO 5: Tunnel mit kubectl port-forward service/shop-api 8080:80 und frag /version ab.
+# TODO 5: Tunnel with kubectl port-forward service/shop-api 8080:80 and query /version.

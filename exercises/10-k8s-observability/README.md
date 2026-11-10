@@ -1,33 +1,35 @@
-# 10 · Was passiert gerade im Cluster?
+*English · [Deutsch](README.de.md)*
 
-Zusatzkapitel, Lektion `k8s-observability`. Du installierst metrics-server und findest mit Bordmitteln heraus, was Pods brauchen, was Kubernetes tut und warum ein Container neu gestartet ist.
+# 10 · What is happening in the cluster right now?
 
-Voraussetzung: Der Stack aus Übung 08 läuft im Namespace `werkstatt`.
+Extra chapter, lesson `k8s-observability`. You install metrics-server and use built-in tools to find out what Pods need, what Kubernetes does and why a container restarted.
 
-## Aufgabe
+Prerequisite: the stack from exercise 08 is running in the namespace `werkstatt`.
 
-1. Ergänze [`start/metrics-server/kustomization.yaml`](start/metrics-server/kustomization.yaml): `components.yaml` von metrics-server v0.9.1 als Resource,
+## Task
+
+1. Complete [`start/metrics-server/kustomization.yaml`](start/metrics-server/kustomization.yaml): `components.yaml` of metrics-server v0.9.1 as a resource,
    `https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.9.1/components.yaml`,
-   und ein JSON-Patch, der `--kubelet-insecure-tls` an die `args` hängt.
-2. Ergänze [`start/observe.sh`](start/observe.sh): `kubectl top`, `kubectl events`, Logs per Label, ein erzwungener Neustart per SIGTERM, `describe` und `logs --previous`.
+   and a JSON patch that appends `--kubelet-insecure-tls` to the `args`.
+2. Complete [`start/observe.sh`](start/observe.sh): `kubectl top`, `kubectl events`, logs by label, a forced restart via SIGTERM, `describe` and `logs --previous`.
 
 ```bash
 cd exercises/10-k8s-observability/start
 bash observe.sh
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- `kubectl top pods` zeigt je API-Pod rund 45 MiB Speicher und wenige Millicores.
-- `kubectl events` zeigt auch die fehlgeschlagenen Readiness Probes beim Start.
-- `describe pod` zeigt nach dem Neustart `Last State: Terminated` mit `Exit Code: 0`, `logs --previous` zeigt `shutdown complete`.
+- `kubectl top pods` shows around 45 MiB of memory and a few millicores per API Pod.
+- `kubectl events` also shows the failed readiness probes during startup.
+- After the restart, `describe pod` shows `Last State: Terminated` with `Exit Code: 0`, `logs --previous` shows `shutdown complete`.
 
-`--kubelet-insecure-tls` gehört nur in lokale Cluster: Die Kubelets in kind haben selbstsignierte Zertifikate. In der Cloud bringt der Provider metrics-server meist schon mit.
+`--kubelet-insecure-tls` belongs in local clusters only: the kubelets in kind have self-signed certificates. In the cloud the provider usually ships metrics-server already.
 
-Für Traces und Metriken über Services hinweg nutzt du OpenTelemetry. Mehr dazu in der Lektion zu Observability im Node.js-Workshop.
+For traces and metrics across services you use OpenTelemetry. More on that in the observability lesson of the Node.js workshop.
 
-Entferne in `start/test/observability.test.ts` das `.skip` und führe `npx vitest exercises/10-k8s-observability/start` aus.
+Remove the `.skip` in `start/test/observability.test.ts` and run `npx vitest exercises/10-k8s-observability/start`.
 
-## Lösung
+## Reference solution
 
-[`solution/metrics-server/kustomization.yaml`](solution/metrics-server/kustomization.yaml) und [`solution/observe.sh`](solution/observe.sh)
+[`solution/metrics-server/kustomization.yaml`](solution/metrics-server/kustomization.yaml) and [`solution/observe.sh`](solution/observe.sh)

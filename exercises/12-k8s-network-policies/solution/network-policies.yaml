@@ -1,5 +1,5 @@
-# Ab Werk darf jeder Pod jeden Pod erreichen. Diese Policies drehen das um:
-# erst alles verbieten, dann genau die Wege erlauben, die der Shop braucht.
+# By default every Pod can reach every Pod. These policies turn that around:
+# first deny everything, then allow exactly the paths the shop needs.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -9,7 +9,7 @@ spec:
   podSelector: {}
   policyTypes: [Ingress]
 ---
-# Gateway → API: nur der Envoy-Proxy aus envoy-gateway-system, nur auf Port http.
+# Gateway → API: only the Envoy proxy from envoy-gateway-system, only on port http.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -28,7 +28,7 @@ spec:
       ports:
         - port: http
 ---
-# API → Postgres: nur Pods der API, nur Port 5432.
+# API → Postgres: only Pods of the API, only port 5432.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:

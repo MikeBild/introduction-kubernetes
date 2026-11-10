@@ -1,7 +1,7 @@
-# Gateway API: drei Rollen, drei Objekte.
-# GatewayClass – welche Implementierung? (Plattform-Team)
-# Gateway      – welcher Eingang, welcher Port? (Cluster-Betrieb)
-# HTTPRoute    – welcher Pfad zu welchem Service? (App-Team)
+# Gateway API: three roles, three objects.
+# GatewayClass – which implementation? (platform team)
+# Gateway      – which entry point, which port? (cluster operations)
+# HTTPRoute    – which path to which Service? (app team)
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
@@ -38,7 +38,7 @@ spec:
             type: PathPrefix
             value: /api
       filters:
-        # /api/products wird zu /products – die API kennt das Präfix nicht.
+        # /api/products becomes /products – the API does not know the prefix.
         - type: URLRewrite
           urlRewrite:
             path:

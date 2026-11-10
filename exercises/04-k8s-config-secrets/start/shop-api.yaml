@@ -1,7 +1,7 @@
-# TODO 3: Lies die ConfigMap mit envFrom ein.
-# TODO 4: Hol DB_PASSWORD per secretKeyRef aus dem Secret shop-db, Key POSTGRES_PASSWORD.
-# TODO 5: Setz DATABASE_URL aus $(DB_USER), $(DB_PASSWORD), $(DB_HOST) und $(DB_NAME) zusammen.
-# Du startest Deployments, keine Pods: Das Deployment hält zwei Replicas am Leben.
+# TODO 3: Read the ConfigMap with envFrom.
+# TODO 4: Get DB_PASSWORD via secretKeyRef from the Secret shop-db, key POSTGRES_PASSWORD.
+# TODO 5: Compose DATABASE_URL from $(DB_USER), $(DB_PASSWORD), $(DB_HOST) and $(DB_NAME).
+# You start Deployments, not Pods: the Deployment keeps two replicas alive.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,6 +29,6 @@ spec:
             - name: http
               containerPort: 3000
           env:
-            # Vorläufig im Klartext – die Lektion zu ConfigMaps und Secrets räumt das auf.
+            # Plain text for now – the lesson on ConfigMaps and Secrets cleans this up.
             - name: DATABASE_URL
               value: postgres://postgres:werkstatt@postgres:5432/shop

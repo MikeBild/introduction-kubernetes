@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-// Domäne des Werkstatt-Shops: Geld immer in ganzen Cent, IDs als Branded Types.
+// Domain of the workshop shop: money always in whole cents, IDs as branded types.
 export type ProductId = string & { readonly __brand: 'ProductId' }
 export type OrderId = string & { readonly __brand: 'OrderId' }
 
@@ -32,7 +32,7 @@ export type PriceResult =
   | { ok: true; items: OrderItem[] }
   | { ok: false; reason: 'unknown-product' | 'out-of-stock'; productId: string }
 
-// Pure Function: Positionen mit aktuellem Preis und Bestand prüfen.
+// Pure Function: check line items against the current price and stock.
 export const priceItems = (input: PlaceOrderInput, products: readonly Product[]): PriceResult => {
   const byId = new Map(products.map((product) => [product.id as string, product]))
   const items: OrderItem[] = []

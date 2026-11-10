@@ -1,4 +1,4 @@
-# Die Basis: alles, was in jeder Umgebung gleich ist.
+# The base: everything that is the same in every environment.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: werkstatt
@@ -10,8 +10,8 @@ resources:
   - postgres.yaml
   - shop-api.yaml
   - service.yaml
-# Die ConfigMap entsteht aus Literalen. Kustomize hängt einen Hash an den Namen –
-# ändert sich ein Wert, ändert sich der Name, und das Deployment rollt neu aus.
+# The ConfigMap is generated from literals. Kustomize appends a hash to the name –
+# if a value changes, the name changes, and the Deployment rolls out again.
 configMapGenerator:
   - name: shop-api-config
     literals:

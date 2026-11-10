@@ -1,8 +1,8 @@
-# Gateway API: drei Rollen, drei Objekte.
-# TODO 1: GatewayClass envoy mit controllerName gateway.envoyproxy.io/gatewayclass-controller.
-# TODO 2: Gateway werkstatt im Namespace werkstatt mit einem Listener http auf Port 80.
-# TODO 3: HTTPRoute shop-api: PathPrefix /api auf den Service shop-api, Port 80.
-# TODO 4: Filter URLRewrite mit ReplacePrefixMatch, damit aus /api/products wieder /products wird.
+# Gateway API: three roles, three objects.
+# TODO 1: GatewayClass envoy with controllerName gateway.envoyproxy.io/gatewayclass-controller.
+# TODO 2: Gateway werkstatt in the namespace werkstatt with a listener http on port 80.
+# TODO 3: HTTPRoute shop-api: PathPrefix /api to the Service shop-api, port 80.
+# TODO 4: Filter URLRewrite with ReplacePrefixMatch, so /api/products becomes /products again.
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:

@@ -8,7 +8,7 @@ const products: Product[] = [
   { id: 'p-hammer' as Product['id'], name: 'Schlosserhammer 500 g', priceCents: 1990, stock: 2 },
 ]
 
-// Store im Speicher: Die HTTP-Schicht lässt sich ohne Postgres testen.
+// In-memory store: the HTTP layer can be tested without Postgres.
 const fakeStore = (healthy: () => boolean): Store => {
   const orders: Order[] = []
   return {
@@ -51,28 +51,28 @@ afterAll(() => close())
 const post = (path: string, body: unknown) =>
   fetch(`${base}${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
 
-describe('Werkstatt-Shop-API', () => {
-  it('berechnet Summen in ganzen Cent', () => {
+describe('Workshop shop API', () => {
+  it('calculates totals in whole cents', () => {
     expect(totalCents([{ productId: products[0]!.id, quantity: 3, priceCents: 1990 }])).toBe(5970)
   })
 
-  it('legt eine Bestellung an und antwortet mit 201', async () => {
+  it('creates an order and responds with 201', async () => {
     const res = await post('/orders', { customerId: 'c-1', items: [{ productId: 'p-hammer', quantity: 2 }] })
     expect(res.status).toBe(201)
     expect(await res.json()).toMatchObject({ status: 'placed', totalCents: 3980 })
   })
 
-  it('lehnt ungültige Eingaben mit 400 ab', async () => {
+  it('rejects invalid input with 400', async () => {
     const res = await post('/orders', { customerId: 'c-1', items: [] })
     expect(res.status).toBe(400)
   })
 
-  it('meldet zu wenig Bestand mit 409', async () => {
+  it('reports insufficient stock with 409', async () => {
     const res = await post('/orders', { customerId: 'c-1', items: [{ productId: 'p-hammer', quantity: 5 }] })
     expect(res.status).toBe(409)
   })
 
-  it('trennt Liveness von Readiness', async () => {
+  it('separates liveness from readiness', async () => {
     dbUp = false
     expect((await fetch(`${base}/livez`)).status).toBe(200)
     expect((await fetch(`${base}/readyz`)).status).toBe(503)
@@ -80,13 +80,13 @@ describe('Werkstatt-Shop-API', () => {
     expect((await fetch(`${base}/readyz`)).status).toBe(200)
   })
 
-  it('meldet sich im Shutdown nicht mehr bereit', async () => {
+  it('reports not ready during shutdown', async () => {
     shuttingDown = true
     expect((await fetch(`${base}/readyz`)).status).toBe(503)
     shuttingDown = false
   })
 
-  it('nennt seine Version', async () => {
+  it('reports its version', async () => {
     expect(await (await fetch(`${base}/version`)).json()).toEqual({ version: 'test' })
   })
 })

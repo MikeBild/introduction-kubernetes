@@ -1,4 +1,4 @@
--- Schema und Startdaten des Werkstatt-Shops. Läuft beim ersten Start von Postgres.
+-- Schema and seed data of the workshop shop. Runs on the first start of Postgres.
 create table if not exists products (
   id text primary key,
   name text not null,

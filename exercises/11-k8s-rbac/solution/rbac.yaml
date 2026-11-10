@@ -1,6 +1,6 @@
-# Jede Identität bekommt genau die Rechte, die sie braucht – und nur in ihrem Namespace.
+# Each identity gets exactly the permissions it needs – and only in its namespace.
 
-# Die API selbst spricht nie mit der Kubernetes API: eigener ServiceAccount, kein Token.
+# The API itself never talks to the Kubernetes API: its own ServiceAccount, no token.
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -8,7 +8,7 @@ metadata:
   namespace: werkstatt
 automountServiceAccountToken: false
 ---
-# Die CI rollt neue Versionen aus. Sie braucht Deployments, aber keine Secrets.
+# The CI rolls out new versions. It needs Deployments, but no Secrets.
 apiVersion: v1
 kind: ServiceAccount
 metadata:

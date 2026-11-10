@@ -1,34 +1,36 @@
-# 12 · Erst alles verbieten, dann Wege erlauben
+*English · [Deutsch](README.de.md)*
 
-Zusatzkapitel Sicherheit, Lektion `k8s-network-policies`. Ab Werk erreicht jeder Pod jeden Pod. Du schränkst das auf die Wege ein, die der Werkstatt-Shop braucht: Gateway zur API, API zu Postgres.
+# 12 · Deny everything first, then allow paths
 
-Voraussetzung: Envoy Gateway aus Übung 08 ist installiert.
+Extra chapter on security, lesson `k8s-network-policies`. Out of the box, every Pod can reach every Pod. You restrict that to the paths the workshop shop needs: Gateway to API, API to Postgres.
 
-## Aufgabe
+Prerequisite: Envoy Gateway from exercise 08 is installed.
 
-Ergänze [`start/network-policies.yaml`](start/network-policies.yaml):
+## Task
 
-1. `default-deny-ingress`: leerer `podSelector`, `policyTypes: [Ingress]`, keine Regeln.
-2. `allow-gateway-to-api`: Pods `shop-api` nehmen nur Traffic aus dem Namespace `envoy-gateway-system` an, nur auf Port `http`.
-3. `allow-api-to-postgres`: Pods `postgres` nehmen nur Traffic von Pods `shop-api` an, nur auf Port 5432.
+Complete [`start/network-policies.yaml`](start/network-policies.yaml):
+
+1. `default-deny-ingress`: empty `podSelector`, `policyTypes: [Ingress]`, no rules.
+2. `allow-gateway-to-api`: Pods `shop-api` accept traffic only from the namespace `envoy-gateway-system`, only on port `http`.
+3. `allow-api-to-postgres`: Pods `postgres` accept traffic only from Pods `shop-api`, only on port 5432.
 
 ```bash
 cd exercises/12-k8s-network-policies/start
 bash verify.sh
 ```
 
-## Prüfkriterien
+## Acceptance criteria
 
-- `blockiert:  werkstatt → shop-api:80` – auch Pods im eigenen Namespace kommen nicht mehr direkt an die API.
+- `blockiert:  werkstatt → shop-api:80` (“blocked”) – even Pods in the same namespace no longer reach the API directly.
 - `blockiert:  default → postgres.werkstatt:5432`
-- Über das Gateway liefert `/api/readyz` weiterhin `{"status":"ready"}`.
+- Through the Gateway, `/api/readyz` still returns `{"status":"ready"}`.
 
-kind setzt NetworkPolicies mit seinem Standard-Netzwerk kindnet durch, geprüft mit kind v0.33. Nicht jedes Plugin tut das: Ohne Unterstützung im Container Network Interface, kurz CNI, werden Policies still ignoriert. Prüf deshalb immer mit einem Gegentest wie `verify.sh`.
+kind enforces NetworkPolicies with its default network kindnet, verified with kind v0.33. Not every plugin does: without support in the Container Network Interface, CNI for short, policies are silently ignored. So always check with a counter-test like `verify.sh`.
 
-Die Health Checks des Kubelets kommen vom Node selbst und bleiben erlaubt. Ausgehenden Traffic schränkst du mit `policyTypes: [Egress]` ein. Denk dann an DNS: Port 53 zu CoreDNS im Namespace `kube-system`.
+The health checks of the kubelet come from the node itself and remain allowed. You restrict outgoing traffic with `policyTypes: [Egress]`. Then remember DNS: port 53 to CoreDNS in the namespace `kube-system`.
 
-Entferne in `start/test/network-policies.test.ts` das `.skip` und führe `npx vitest exercises/12-k8s-network-policies/start` aus.
+Remove the `.skip` in `start/test/network-policies.test.ts` and run `npx vitest exercises/12-k8s-network-policies/start`.
 
-## Lösung
+## Reference solution
 
-[`solution/network-policies.yaml`](solution/network-policies.yaml) und [`solution/verify.sh`](solution/verify.sh)
+[`solution/network-policies.yaml`](solution/network-policies.yaml) and [`solution/verify.sh`](solution/verify.sh)

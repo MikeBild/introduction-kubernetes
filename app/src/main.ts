@@ -12,7 +12,7 @@ const server = app.listen(config.port, () => {
   log('info', 'server started', { port: config.port, version: config.version })
 })
 
-// SIGTERM kommt bei docker stop und bei jedem Rollout: fertig machen, dann gehen.
+// SIGTERM arrives on docker stop and on every rollout: finish up, then leave.
 const shutdown = (signal: NodeJS.Signals) => {
   log('info', 'shutdown started', { signal })
   shuttingDown = true

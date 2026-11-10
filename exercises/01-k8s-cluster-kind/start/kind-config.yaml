@@ -1,6 +1,6 @@
-# Ein lokaler Cluster mit kind. Jeder Node ist ein Docker-Container.
-# TODO 1: Ergänze zwei Worker Nodes (role: worker).
-# TODO 2: Leg für jeden Node das Image kindest/node:v1.37.0 mit Digest fest (siehe README).
+# A local cluster with kind. Each node is a Docker container.
+# TODO 1: Add two worker nodes (role: worker).
+# TODO 2: Pin the image kindest/node:v1.37.0 with digest for every node (see README).
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: werkstatt

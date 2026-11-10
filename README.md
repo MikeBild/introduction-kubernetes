@@ -1,127 +1,129 @@
-# Übungen: Kubernetes
+*English · [Deutsch](README.de.md)*
 
-Übungs-Repo zum zweiten Teil des Workshops „Docker & Kubernetes“. Zu jeder Kubernetes-Lektion findest du hier eine Übung mit Startpunkt, Tests und Lösung. Alle Übungen drehen sich um dieselbe Anwendung, die Werkstatt-Shop-API: Produkte, Bestellungen mit Positionen aus `productId`, `quantity` und `priceCents`, Geld immer in ganzen Cent.
+# Exercises: Kubernetes
 
-## Was du lernst
+Exercise repository for the second part of the workshop “Docker & Kubernetes”. For every Kubernetes lesson you find an exercise here with a starting point, tests and a reference solution. All exercises revolve around the same application, the workshop shop API: products, orders with line items made of `productId`, `quantity` and `priceCents`, money always in whole cents.
 
-- Einen lokalen Cluster mit kind anlegen und die API als Deployment betreiben
-- Services, Konfiguration, Probes, Ressourcen und Rollouts ohne Downtime
-- Gateway API, Kustomize, Observability und Absicherung mit Rechten und Policies
+## What you learn
 
-## Voraussetzungen
+- Create a local cluster with kind and run the API as a Deployment
+- Services, configuration, probes, resources and rollouts without downtime
+- Gateway API, Kustomize, observability and hardening with permissions and policies
 
-Den Docker-Teil des Workshops findest du in [MikeBild/introduction-docker](https://github.com/MikeBild/introduction-docker).
+## Prerequisites
 
-1. **Docker** – Docker Desktop oder Docker Engine. kind startet jeden Node als Container.
-2. **kind** und **kubectl** – `brew install kind kubectl` oder die Anleitungen auf [kind.sigs.k8s.io](https://kind.sigs.k8s.io/docs/user/quick-start/) und [kubernetes.io](https://kubernetes.io/docs/tasks/tools/). kubectl bringt Kustomize schon mit.
-3. **Node.js 26** – `nvm use` liest die Version aus [`.nvmrc`](.nvmrc). Node.js brauchst du für die Tests.
+You find the Docker part of the workshop in [MikeBild/introduction-docker](https://github.com/MikeBild/introduction-docker).
 
-**Stack (Oktober 2026):** Kubernetes 1.37 lokal mit kind v0.33 · Gateway API v1.6 mit Envoy Gateway v1.9 · Kustomize in kubectl · metrics-server v0.9 · Node.js 26 im Distroless-Image · Express 5 · Postgres 18 · TypeScript strict als ESM · Vitest
+1. **Docker** – Docker Desktop or Docker Engine. kind starts every node as a container.
+2. **kind** and **kubectl** – `brew install kind kubectl` or the guides on [kind.sigs.k8s.io](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubernetes.io](https://kubernetes.io/docs/tasks/tools/). kubectl already ships with Kustomize.
+3. **Node.js 26** – `nvm use` reads the version from [`.nvmrc`](.nvmrc). You need Node.js for the tests.
 
-## Einrichten
+**Stack (October 2026):** Kubernetes 1.37 locally with kind v0.33 · Gateway API v1.6 with Envoy Gateway v1.9 · Kustomize in kubectl · metrics-server v0.9 · Node.js 26 in a Distroless image · Express 5 · Postgres 18 · TypeScript strict as ESM · Vitest
 
-Repo klonen, Abhängigkeiten installieren, alles prüfen:
+## Setup
+
+Clone the repository, install the dependencies, check everything:
 
 ```bash
 git clone https://github.com/MikeBild/introduction-kubernetes.git
 cd introduction-kubernetes
 npm ci
-npm run check        # tsc, Vitest und Abgleich der gegebenen Manifeste – ohne Cluster
+npm run check        # tsc, Vitest and comparison of the given manifests – without a cluster
 ```
 
-Cluster anlegen und Images laden – das ist Übung 01:
+Create the cluster and load the images – that is exercise 01:
 
 ```bash
 bash exercises/01-k8s-cluster-kind/solution/setup.sh
 ```
 
-## So arbeitest du mit einer Übung
+## How to work on an exercise
 
-1. Lies die README der Übung und ergänze die Dateien in `start/` an den TODO-Kommentaren.
-2. Wende die Manifeste mit `kubectl apply -f .` an oder führe das Skript der Übung aus.
-3. Entferne in `start/test/*.test.ts` das `.skip` und führe `npx vitest exercises/<nr>/start` aus.
-4. Vergleiche mit der Lösung in `solution/`.
+1. Read the README of the exercise and complete the files in `start/` at the TODO comments.
+2. Apply the manifests with `kubectl apply -f .` or run the script of the exercise.
+3. Remove the `.skip` in `start/test/*.test.ts` and run `npx vitest exercises/<nr>/start`.
+4. Compare with the reference solution in `solution/`.
 
-Jede Übung ist eigenständig: `cd exercises/<nr>/start` und `kubectl apply -f .` reichen. Die gegebenen Manifeste liegen deshalb als Kopie in jedem Ordner. Änderst du `app/k8s/`, verteilt `npm run sync` die Kopien neu; `npm run check` meldet veraltete Kopien.
+Every exercise is self-contained: `cd exercises/<nr>/start` and `kubectl apply -f .` are enough. That is why the given manifests live as a copy in every folder. If you change `app/k8s/`, `npm run sync` redistributes the copies; `npm run check` reports outdated copies.
 
-Die Tests lesen die Manifeste und prüfen die wichtigen Entscheidungen, für Kustomize rendern sie mit `kubectl kustomize`. Einen Cluster brauchen sie nicht. Ob alles wirklich läuft, zeigen dir die Skripte in den Übungen; die CI wendet die Lösungen 02 bis 08 in einem kind-Cluster an.
+The tests read the manifests and check the important decisions; for Kustomize they render with `kubectl kustomize`. They do not need a cluster. Whether everything really runs is shown by the scripts in the exercises; the CI applies the solutions 02 to 08 in a kind cluster.
 
-## Übungen
+## Exercises
 
-| # | Lektion | ID | Übung |
+| # | Lesson | ID | Exercise |
 | --- | --- | --- | --- |
-| 01 | Kubernetes gleicht ständig Soll und Ist ab | `k8s-cluster-kind` | [exercises/01-k8s-cluster-kind](exercises/01-k8s-cluster-kind) |
-| 02 | Du startest Deployments, keine Pods | `k8s-deployments` | [exercises/02-k8s-deployments](exercises/02-k8s-deployments) |
-| 03 | Ein Service gibt Pods einen festen Namen | `k8s-services` | [exercises/03-k8s-services](exercises/03-k8s-services) |
-| 04 | Konfiguration gehört nicht ins Image | `k8s-config-secrets` | [exercises/04-k8s-config-secrets](exercises/04-k8s-config-secrets) |
-| 05 | Probes sagen Kubernetes, wann ein Pod arbeitet | `k8s-probes` | [exercises/05-k8s-probes](exercises/05-k8s-probes) |
-| 06 | Requests planen, Limits begrenzen | `k8s-resources` | [exercises/06-k8s-resources](exercises/06-k8s-resources) |
-| 07 | Ein Update ohne Ausfall ist ein Rollout | `k8s-rolling-updates` | [exercises/07-k8s-rolling-updates](exercises/07-k8s-rolling-updates) |
-| 08 | Gateway API löst Ingress ab | `k8s-gateway-api` | [exercises/08-k8s-gateway-api](exercises/08-k8s-gateway-api) |
+| 01 | Kubernetes constantly reconciles desired and actual state | `k8s-cluster-kind` | [exercises/01-k8s-cluster-kind](exercises/01-k8s-cluster-kind) |
+| 02 | You start Deployments, not Pods | `k8s-deployments` | [exercises/02-k8s-deployments](exercises/02-k8s-deployments) |
+| 03 | A Service gives Pods a stable name | `k8s-services` | [exercises/03-k8s-services](exercises/03-k8s-services) |
+| 04 | Configuration does not belong in the image | `k8s-config-secrets` | [exercises/04-k8s-config-secrets](exercises/04-k8s-config-secrets) |
+| 05 | Probes tell Kubernetes when a Pod is working | `k8s-probes` | [exercises/05-k8s-probes](exercises/05-k8s-probes) |
+| 06 | Requests schedule, limits cap | `k8s-resources` | [exercises/06-k8s-resources](exercises/06-k8s-resources) |
+| 07 | An update without downtime is a rollout | `k8s-rolling-updates` | [exercises/07-k8s-rolling-updates](exercises/07-k8s-rolling-updates) |
+| 08 | Gateway API replaces Ingress | `k8s-gateway-api` | [exercises/08-k8s-gateway-api](exercises/08-k8s-gateway-api) |
 
-### Zusatzkapitel
+### Extra chapters
 
-| # | Lektion | ID | Übung |
+| # | Lesson | ID | Exercise |
 | --- | --- | --- | --- |
-| 09 | Eine Basis, mehrere Umgebungen | `k8s-kustomize` | [exercises/09-k8s-kustomize](exercises/09-k8s-kustomize) |
-| 10 | Was im Cluster passiert, zeigen Events, Logs und Metrics | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
-| 11 | Wer darf was im Cluster? | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
-| 12 | Im Cluster darf erst einmal jeder mit jedem reden | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
-| 13 | Ein Pod braucht weniger Rechte, als er bekommt | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
+| 09 | One base, multiple environments | `k8s-kustomize` | [exercises/09-k8s-kustomize](exercises/09-k8s-kustomize) |
+| 10 | Events, logs and metrics show what happens in the cluster | `k8s-observability` | [exercises/10-k8s-observability](exercises/10-k8s-observability) |
+| 11 | Who may do what in the cluster? | `k8s-rbac` | [exercises/11-k8s-rbac](exercises/11-k8s-rbac) |
+| 12 | In the cluster, everyone can talk to everyone at first | `k8s-network-policies` | [exercises/12-k8s-network-policies](exercises/12-k8s-network-policies) |
+| 13 | A Pod needs fewer permissions than it gets | `k8s-pod-security` | [exercises/13-k8s-pod-security](exercises/13-k8s-pod-security) |
 
-Die Übungen 02 bis 08 bauen aufeinander auf: Der Startpunkt von 05 ist die Lösung von 04 und so weiter. Die Zusatzkapitel setzen den Stack aus 08 voraus, 11 bis 13 behandeln Sicherheit. Du kannst trotzdem bei jeder Nummer einsteigen.
+Exercises 02 to 08 build on each other: the starting point of 05 is the solution of 04, and so on. The extra chapters require the stack from 08; 11 to 13 cover security. You can still start at any number.
 
-## Warum kind, Gateway API und Kustomize?
+## Why kind, Gateway API and Kustomize?
 
-- **kind** startet Upstream-Kubernetes per kubeadm in Docker-Containern, mit mehreren Nodes aus einer Config-Datei. Lokale Images kommen per `kind load docker-image` ohne Registry in den Cluster. k3d startet dagegen k3s mit Traefik und weiteren Extras, die genau die Konzepte verdecken, um die es hier geht.
-- **Gateway API statt Ingress:** Die Ingress-API ist eingefroren, Ingress NGINX ist seit März 2026 eingestellt. Die Gateway API ist der Nachfolger, Envoy Gateway eine konforme Implementierung.
-- **Kustomize statt Helm:** Kustomize steckt in kubectl und bleibt reines YAML ohne Template-Sprache. Helm brauchst du, um fremde Charts zu installieren, nicht für deine eigenen Manifeste.
+- **kind** starts upstream Kubernetes via kubeadm in Docker containers, with several nodes from one config file. Local images get into the cluster with `kind load docker-image`, no registry needed. k3d, by contrast, starts k3s with Traefik and further extras that hide exactly the concepts this is about.
+- **Gateway API instead of Ingress:** The Ingress API is frozen, Ingress NGINX has been retired since March 2026. The Gateway API is the successor, Envoy Gateway a conformant implementation.
+- **Kustomize instead of Helm:** Kustomize is built into kubectl and stays plain YAML without a template language. You need Helm to install third-party charts, not for your own manifests.
 
-## Aufbau
+## Structure
 
 ```text
-app/                     Werkstatt-Shop-API: Express 5, postgres.js, zod
-  Dockerfile             Distroless-Image, ARG APP_VERSION für 1.0.0 und 1.1.0
-  k8s/                   gegeben: Namespace und Postgres 18 als StatefulSet
+app/                     workshop shop API: Express 5, postgres.js, zod
+  Dockerfile             Distroless image, ARG APP_VERSION for 1.0.0 and 1.1.0
+  k8s/                   given: Namespace and Postgres 18 as StatefulSet
 exercises/
   02-k8s-deployments/
-    README.md            Aufgabe, Ablauf, Prüfkriterien
-    start/               dein Startpunkt mit TODO-Kommentaren
-      00-namespace.yaml  gegeben, wird zuerst angewendet
-      postgres.yaml      gegeben
-      shop-api.yaml      deine Aufgabe
-      test/*.test.ts     Tests mit describe.skip – entferne .skip, wenn du mit der Übung beginnst
-    solution/            eine mögliche Lösung, gleiche Struktur
-legacy/2018/             das Material von 2018, nur als Archiv
+    README.md            task, steps, acceptance criteria
+    start/               your starting point with TODO comments
+      00-namespace.yaml  given, applied first
+      postgres.yaml      given
+      shop-api.yaml      your task
+      test/*.test.ts     tests with describe.skip – remove .skip when you begin the exercise
+    solution/            one possible solution, same structure
+archive/2018/            the 2018 material, archive only
 ```
 
-## Pakete
+## Packages
 
-Die App nutzt drei Pakete, jedes mit einem Grund:
+The app uses three packages, each for a reason:
 
-- `express` 5 – HTTP-Routing; Fehler aus async Handlern landen ohne Zusatzpaket im Error Handler.
-- `postgres` (postgres.js) – SQL als Tagged Template, Parameter nie im SQL-Text, Pool und Transaktionen eingebaut.
-- `zod` 4 – dasselbe Schema für Bestellungen wie im Frontend des Werkstatt-Shops.
+- `express` 5 – HTTP routing; errors from async handlers reach the error handler without an extra package.
+- `postgres` (postgres.js) – SQL as tagged template, parameters never in the SQL text, pool and transactions built in.
+- `zod` 4 – the same schema for orders as in the frontend of the workshop shop.
 
-Dazu für die Entwicklung: `typescript`, `vitest`, `@types/node`, `@types/express` und `yaml` für die Tests der Manifeste.
+Plus, for development: `typescript`, `vitest`, `@types/node`, `@types/express` and `yaml` for the manifest tests.
 
-## Aufräumen
+## Cleanup
 
 ```bash
 kind delete cluster --name werkstatt
 docker image rm shop-api:1.0.0 shop-api:1.1.0
 ```
 
-## Workshop und Folien
+## Workshop and slides
 
-- Workshop: [„Docker & Kubernetes“](https://workshops.mikebild.dev/w/docker-kubernetes/remote/)
-- Folien: [slides.mikebild.dev/introduction-kubernetes](https://slides.mikebild.dev/introduction-kubernetes.html)
+- Workshop: [“Docker & Kubernetes”](https://workshops.mikebild.dev/w/docker-kubernetes/remote/)
+- Slides: [slides.mikebild.dev/introduction-kubernetes](https://slides.mikebild.dev/introduction-kubernetes.html)
 - PDF: [slides.mikebild.dev/introduction-kubernetes.pdf](https://slides.mikebild.dev/introduction-kubernetes.pdf)
 
-## Archiv
+## Archive
 
-Die erste Fassung von 2018 (Minikube, Google Cloud, Ingress mit nginx, Node.js mit Yarn) liegt unverändert unter [`legacy/2018/`](legacy/2018/) und wird weder gebaut noch getestet.
+The first version from 2018 (Minikube, Google Cloud, Ingress with nginx, Node.js with Yarn) lives unchanged under [`archive/2018/`](archive/2018/) and is neither built nor tested.
 
-## Lizenz
+## License
 
 [MIT](LICENSE)
