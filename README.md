@@ -116,9 +116,9 @@ docker image rm shop-api:1.0.0 shop-api:1.1.0
 
 ## Workshop and slides
 
-- Workshop: [“Docker & Kubernetes”](https://workshops.mikebild.dev/w/docker-kubernetes/remote/)
-- Slides: [slides.mikebild.dev/introduction-kubernetes](https://slides.mikebild.dev/introduction-kubernetes.html)
-- PDF: [slides.mikebild.dev/introduction-kubernetes.pdf](https://slides.mikebild.dev/introduction-kubernetes.pdf)
+- Workshop (held in German): [“Docker & Kubernetes”](https://workshops.mikebild.dev/w/docker-kubernetes/remote/)
+- Slides: [slides.mikebild.dev/introduction-kubernetes.en](https://slides.mikebild.dev/introduction-kubernetes.en.html)
+- PDF: [introduction-kubernetes.en.pdf](https://objects.upraft.mikebild.info/site-media/mikebild/decks/introduction-kubernetes/introduction-kubernetes.en.pdf)
 
 ## Archive
 
