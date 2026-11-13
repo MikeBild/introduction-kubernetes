@@ -118,8 +118,8 @@ docker image rm shop-api:1.0.0 shop-api:1.1.0
 
 - Workshop (held in German): [“Docker & Kubernetes”](https://workshops.mikebild.dev/w/docker-kubernetes/remote/)
 - Slides: [slides.mikebild.dev/introduction-docker-kubernetes.en](https://slides.mikebild.dev/introduction-docker-kubernetes.en.html)
-- PDF: [introduction-docker-kubernetes.en.pdf](https://objects.upraft.mikebild.info/site-media/mikebild/decks/introduction-docker-kubernetes/introduction-docker-kubernetes.en.pdf)
-- Video: [introduction-docker-kubernetes.en.mp4](https://objects.upraft.mikebild.info/site-media/mikebild/decks/introduction-docker-kubernetes/introduction-docker-kubernetes.en.mp4)
+- PDF: [introduction-docker-kubernetes.en.pdf](https://media.mikebild.dev/site/mikebild/decks/introduction-docker-kubernetes/introduction-docker-kubernetes.en.pdf)
+- Video: [introduction-docker-kubernetes.en.mp4](https://media.mikebild.dev/site/mikebild/decks/introduction-docker-kubernetes/introduction-docker-kubernetes.en.mp4)
 - Posts on mikebild.dev:
   - [Node.js and Redis with Docker Compose](https://www.mikebild.dev/en/blog/nodejs-and-redis-with-docker-compose/)
   - [Central Logging with the ELK Stack in Docker](https://www.mikebild.dev/en/blog/central-logging-with-the-elk-stack-in-docker/)
