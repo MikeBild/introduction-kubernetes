@@ -5,5 +5,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     include: ['app/test/**/*.test.ts', 'exercises/*/{start,solution}/test/**/*.test.ts'],
+    // Some tests render manifests with kubectl kustomize or helm template on first use: a busy CI runner needs more than 5 s
+    testTimeout: 30_000,
   },
 })
