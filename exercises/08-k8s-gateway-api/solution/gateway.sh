@@ -17,9 +17,15 @@ kubectl -n werkstatt get gateway,httproute
 
 # 3. The controller starts one Envoy proxy with its own Service per Gateway.
 #    kind has no load balancer – port-forward is enough for testing.
-envoy=$(kubectl -n envoy-gateway-system get service \
-  -l gateway.envoyproxy.io/owning-gateway-namespace=werkstatt,gateway.envoyproxy.io/owning-gateway-name=werkstatt \
-  -o jsonpath='{.items[0].metadata.name}')
+#    The controller creates that Service a moment after the Gateway: wait for it (up to 2 minutes).
+selector=gateway.envoyproxy.io/owning-gateway-namespace=werkstatt,gateway.envoyproxy.io/owning-gateway-name=werkstatt
+envoy=""
+for _ in $(seq 1 60); do
+  envoy=$(kubectl -n envoy-gateway-system get service -l "$selector" -o jsonpath='{.items[*].metadata.name}')
+  [ -n "$envoy" ] && break
+  sleep 2
+done
+[ -n "$envoy" ] || { echo "Envoy service for the Gateway werkstatt not found" >&2; exit 1; }
 kubectl -n envoy-gateway-system wait --for=condition=Ready pod \
   -l gateway.envoyproxy.io/owning-gateway-name=werkstatt --timeout=2m
 kubectl -n envoy-gateway-system port-forward "service/$envoy" 8080:80 >/dev/null &
